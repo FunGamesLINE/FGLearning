@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/viewPackagesFragment">
+
+
+    <fragment
+        android:id="@+id/viewPackagesFragment"
+        android:name="com.example.fglearning.fragments.viewList.ViewPackagesFragment"
+        android:label="fragment_view_packages"
+        tools:layout="@layout/fragment_view_packages" >
+        <action
+            android:id="@+id/action_viewPackagesFragment_to_viewPackageItemsAllFragment"
+            app:destination="@id/viewPackageItemsAllFragment" />
+        <action
+            android:id="@+id/action_viewPackagesFragment_to_runFlashcardsFragment"
+            app:destination="@id/runFlashcardsFragment" />
+        <action
+            android:id="@+id/action_viewPackagesFragment_to_runInsertlettersFragment"
+            app:destination="@id/runInsertlettersFragment" />
+        <action
+            android:id="@+id/action_viewPackagesFragment_to_runAccentFragment"
+            app:destination="@id/runAccentFragment" />
+        <action
+            android:id="@+id/action_viewPackagesFragment_to_resultsFragment"
+            app:destination="@id/resultsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPackageItemsAllFragment"
+        android:name="com.example.fglearning.fragments.viewList.ViewPackageItemsAllFragment"
+        android:label="fragment_view_package_items_all"
+        tools:layout="@layout/fragment_view_package_items_all" >
+        <action
+            android:id="@+id/action_viewPackageItemsAllFragment_to_viewPackageItemFragment"
+            app:destination="@id/viewPackageItemFragment" />
+        <action
+            android:id="@+id/action_viewPackageItemsAllFragment_to_viewPackageFragment"
+            app:destination="@id/viewPackageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPackageFragment"
+        android:name="com.example.fglearning.ViewPackageFragment"
+        android:label="ViewPackageFragment" />
+    <fragment
+        android:id="@+id/viewPackageItemFragment"
+        android:name="com.example.fglearning.ViewPackageItemFragment"
+        android:label="ViewPackageItemFragment" />
+    <fragment
+        android:id="@+id/runAccentFragment"
+        android:name="com.example.fglearning.fragments.exercises.RunAccentFragment"
+        android:label="fragment_run_accent"
+        tools:layout="@layout/fragment_run_accent" />
+    <fragment
+        android:id="@+id/runFlashcardsFragment"
+        android:name="com.example.fglearning.fragments.exercises.RunFlashcardsFragment"
+        android:label="fragment_run_flashcards"
+        tools:layout="@layout/fragment_run_flashcards" />
+    <fragment
+        android:id="@+id/runInsertlettersFragment"
+        android:name="com.example.fglearning.fragments.exercises.RunInsertlettersFragment"
+        android:label="fragment_run_insertletters"
+        tools:layout="@layout/fragment_run_insertletters" />
+    <fragment
+        android:id="@+id/resultsFragment"
+        android:name="com.example.fglearning.fragments.ResultsFragment"
+        android:label="fragment_results"
+        tools:layout="@layout/fragment_results" />
+</navigation>

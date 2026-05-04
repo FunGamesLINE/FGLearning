@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FGLearning</string>
+    <string name="finish">Завершить</string>
+    <string name="attention_rotate_device">Пожалуйста, переверните устройство</string>
+    <string name="accent_count_finished_words">Завершено %d/%d слов</string>
+    <string name="results">Результаты</string>
+    <string name="hello_blank_fragment">Fragment</string>
+
+    <string name="navigation_drawer_open">Open Menu</string>
+    <string name="navigation_drawer_close">Close Menu</string>
+</resources>

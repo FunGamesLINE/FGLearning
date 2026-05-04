@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/flashcards"
+            android:title="Флеш-карточки"
+            android:icon="@drawable/cards_stack"/>
+        <item android:id="@+id/accents"
+            android:title="Ударения"
+            android:icon="@drawable/backlight"/>
+        <item android:id="@+id/insert_letters"
+            android:title="Вставка букв"
+            android:icon="@drawable/script"/>
+<!--        <item android:id="@+id/skipped_words"-->
+<!--            android:title="Вставка слов"-->
+<!--            android:icon="@drawable/..."/>-->
+    </group>
+</menu>
