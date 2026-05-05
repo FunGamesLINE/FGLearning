@@ -22,6 +22,7 @@
             android:background="@color/light_gray"
             android:gravity="center">
             <TextView
+                android:id="@+id/exerciseTypeName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
@@ -33,17 +34,18 @@
             android:layout_height="wrap_content"
             android:textSize="30dp"
             android:text="Пакеты"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Всего: 0"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Всего: 0"/>-->
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp" />
 
         <Button
-            android:id="@+id/add_packet_button"
+            android:id="@+id/add_package_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

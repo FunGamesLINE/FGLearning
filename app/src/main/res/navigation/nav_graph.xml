@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_viewPackagesFragment_to_resultsFragment"
             app:destination="@id/resultsFragment" />
+        <action
+            android:id="@+id/action_viewPackagesFragment_to_viewPackageFragment"
+            app:destination="@id/viewPackageFragment" />
     </fragment>
     <fragment
         android:id="@+id/viewPackageItemsAllFragment"

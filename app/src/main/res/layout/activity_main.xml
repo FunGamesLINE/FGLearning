@@ -58,11 +58,15 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
+        <!-- android:id="@+id/frame_content" -->
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/frame_content"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize" />
+            android:layout_marginTop="?attr/actionBarSize"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
