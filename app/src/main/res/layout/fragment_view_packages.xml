@@ -39,6 +39,7 @@
 <!--            android:layout_height="wrap_content"-->
 <!--            android:text="Всего: 0"/>-->
         <androidx.recyclerview.widget.RecyclerView
+            android:scrollbars="vertical"
             android:id="@+id/recyclerView"
             android:layout_weight="1"
             android:layout_width="match_parent"

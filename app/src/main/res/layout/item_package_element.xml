@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical">
+                android:gravity="center_vertical">
                 <!-- Отсутствует у flashcard /
                 Название для текста /
                 слово для ударения или вставки букв -->
@@ -39,10 +39,11 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
                     <TextView
+                        android:id="@+id/itemNameText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PacketName"
-                        android:textSize="20dp"/>
+                        android:text="ElementName"
+                        android:textSize="24dp"/>
                     <!--
                     <ImageView
                         android:id="@+id/imageView3"
@@ -53,50 +54,54 @@
                         -->
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
-                    <!-- first_text / кол-во элем -->
+                    <!-- first_text -->
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/firstText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Количество элементов: 0 (отмечено 0)"/>
+                            android:text="First"/>
                     </LinearLayout>
                     <!-- second_text -->
+                    <View
+                        android:id="@+id/separator"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:foreground="@color/gray"
+                        android:layout_weight="0.05" />
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_marginStart="10dp"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/secondText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Количество элементов: 0 (отмечено 0)"/>
+                            android:text="Second"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/markButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 app:srcCompat="@drawable/bookmark"
                 android:layout_gravity="center"/>
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:srcCompat="@drawable/eye"
-                android:layout_gravity="center"/>
-            <!-- @drawable/format_list_bulleted - ДЛЯ ПАКЕТОВ -->
-            <!-- @drawable/edit / @drawable/eye - ДЛЯ ЭЛЕМЕНТОВ ПАКЕТОВ -->
 
         </LinearLayout>
 

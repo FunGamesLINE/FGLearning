@@ -7,7 +7,9 @@ import com.example.fglearning.databinding.ItemPackageElementBinding
 import com.example.fglearning.database.entity.PackageItem
 
 class PackageItemAdapter (
-    val items: MutableList<PackageItem>
+    val items: MutableList<PackageItem>,
+    val onItemClick: ((PackageItem) -> Unit)? = null,
+    val onMarkClick: ((PackageItem) -> Unit)? = null,
 ) : RecyclerView.Adapter<PackageItemAdapter.PackageItemViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -35,9 +37,17 @@ class PackageItemAdapter (
         notifyDataSetChanged()
     }
 
-    class PackageItemViewHolder(private val binding: ItemPackageElementBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PackageItemViewHolder(private val binding: ItemPackageElementBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PackageItem) {
             binding.packageItem = item
+
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
+
+            binding.markButton.setOnClickListener {
+                onMarkClick?.invoke(item)
+            }
         }
     }
 

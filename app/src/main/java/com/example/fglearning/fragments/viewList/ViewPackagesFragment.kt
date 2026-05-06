@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -35,12 +36,26 @@ class ViewPackagesFragment : Fragment() {
     ): View? {
         binding = FragmentViewPackagesBinding.inflate(layoutInflater)
 
-        val adapter = PackageAdapter(mutableListOf())
-        //TODO обработка всех возможных кликов по пакету и последующие действия
-//        { packet ->
-//            sessionViewModel.setCurrentPacket(packet)
-//            findNavController().navigate(R.id.action_viewPackageItemsAllFragment_to_viewPackageFragment)
-//        }
+        val adapter = PackageAdapter(
+            mutableListOf(),
+            onItemClick = { packet ->
+                sessionViewModel.setCurrentPacket(packet)
+                findNavController().navigate(R.id.action_viewPackagesFragment_to_viewPackageItemsAllFragment)
+            },
+            onMarkClick = { packet ->
+                lifecycleScope.launch {
+                    val updatedPacket = packet.copy(marked = !packet.marked)
+                    packagesViewModel.addPackage(updatedPacket)
+                }
+            },
+            onPlayClick = { packet ->
+                when (sessionViewModel.exerciseType.value) {
+                    1 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runFlashcardsFragment)
+                    2 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runAccentFragment)
+                    3 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runInsertlettersFragment)
+                }
+            }
+        )
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())

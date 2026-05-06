@@ -9,7 +9,7 @@ class SessionViewModel : ViewModel() {
     private val _currentPacket = MutableLiveData<Package?>()
     val currentPacket: LiveData<Package?> = _currentPacket
 
-    private val _exerciseType = MutableLiveData(0)
+    private val _exerciseType = MutableLiveData(1)
     val exerciseType: LiveData<Int> = _exerciseType
 
     private val _shouldShowResults = MutableLiveData(false)
@@ -36,5 +36,9 @@ class SessionViewModel : ViewModel() {
         _exerciseType.value = exercise
     }
 
-    fun getAdding() = adding.value ?: false
+    fun setCurrentPacket(packet: Package) {
+        _currentPacket.value = packet
+    }
+
+    //fun getAdding() = adding.value ?: false
 }

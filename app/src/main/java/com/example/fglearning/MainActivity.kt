@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.viewPackagesFragment -> {
-                    navController.navigate(R.id.viewPackagesFragment)
+                    sessionViewModel.setExerciseType(1)
                 }
                 R.id.flashcards -> {
                     //navController.navigate(R.id.action_viewPackagesFragment_to_runFlashcardsFragment)

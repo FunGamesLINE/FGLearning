@@ -49,6 +49,7 @@ class ViewPackageFragment : Fragment() {
                     packagesViewModel.addPackage(packet)
                 }
             }
+            findNavController().popBackStack()
         }
 
         binding.backButton.setOnClickListener {
@@ -59,9 +60,11 @@ class ViewPackageFragment : Fragment() {
             if (isAdding) {
                 binding.deleteButton.visibility = View.GONE
                 binding.markButton.visibility = View.GONE
+                binding.stats.visibility = View.GONE
             } else {
                 binding.deleteButton.visibility = View.VISIBLE
                 binding.markButton.visibility = View.VISIBLE
+                binding.stats.visibility = View.VISIBLE
             }
         }
 

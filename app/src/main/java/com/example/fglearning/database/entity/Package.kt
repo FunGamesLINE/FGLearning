@@ -9,6 +9,7 @@ data class Package(
     val id: Int = 0,
     val name: String,
     val exercise: Int = 0,
+    val marked: Boolean = false,
     val lastCountCorrect: Int = 0,
     val lastCountIncorrect: Int = 0,
     val recordCountCorrect: Int = 0
