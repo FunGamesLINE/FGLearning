@@ -30,12 +30,14 @@
                     android:layout_height="0dp" />
 
                 <EditText
+                    android:id="@+id/contentEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="25dp"
-                    android:text="Заголовок/слово"
+                    android:hint="Заголовок/слово"
                     android:gravity="center"/>
                 <EditText
+                    android:id="@+id/firstEditText"
                     android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -45,8 +47,10 @@
                     android:gravity="top"
                     android:inputType="textMultiLine|textCapSentences"
                     android:scrollbars="vertical"
-                    android:text="Введите первый текст" />
+                    android:maxLength="100"
+                    android:hint="Введите первый текст" />
                 <EditText
+                    android:id="@+id/firstSecondText"
                     android:layout_marginTop="5dp"
                     android:padding="5dp"
                     android:layout_width="match_parent"
@@ -57,10 +61,12 @@
                     android:gravity="top"
                     android:inputType="textMultiLine|textCapSentences"
                     android:scrollbars="vertical"
-                    android:text="Введите второй текст" />
+                    android:maxLength="100"
+                    android:hint="Введите второй текст" />
 
                 <!-- Gaps in a word / accent position -->
                 <LinearLayout
+                    android:id="@+id/gaps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -74,14 +80,16 @@
                             android:text="Пропуски/позиция"
                             android:textSize="18sp"/>
                         <EditText
+                            android:id="@+id/gapsEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:digits="0123456789,"
+                            android:hint="1,2,3"
                             android:text="" />
                         <!-- android:inputType="number" -->
                     </LinearLayout>
                     <TextView
-                        android:id="@+id/hint_text"
+                        android:id="@+id/gapsHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/red"
@@ -91,6 +99,7 @@
 
                 <!-- Difficulty -->
                 <LinearLayout
+                    android:id="@+id/difficulty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -103,22 +112,30 @@
                             android:layout_height="wrap_content"
                             android:text="Сложность"
                             android:textSize="18sp"/>
-                        <EditText
-                            android:id="@+id/difficulty"
+
+                        <Spinner
+                            android:id="@+id/spinner"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxLength="1"
-                            android:digits="1234"
-                            android:inputType="number"
-                            android:text="" />
-                        <!-- android:inputType="number" -->
+                            android:layout_height="wrap_content"/>
+
+<!--                        <EditText-->
+<!--                            android:id="@+id/difficultyEditText"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:maxLength="1"-->
+<!--                            android:digits="1234"-->
+<!--                            android:inputType="number"-->
+<!--                            android:hint="от 1 до 4"-->
+<!--                            android:text="" />-->
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/difficultyHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/red"
                         android:gravity="end"
                         android:text="*Введите цифру от 1 до 4. Где 1 - легко, 4 - сложно" />
+                    <!-- TODO delete TextView difficultyHintText, replace EditText difficultyEditText to Spinner -->
                 </LinearLayout>
 
                 <Space
@@ -126,36 +143,100 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+            <LinearLayout
+                android:id="@+id/stats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="18sp"
                     android:text="Статистика" />
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Последний просмотр. Нужно повторить карточку" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Последний просмотр:" />
+                    <TextView
+                        android:id="@+id/lastViewText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00.00.0000 00:00" />
+                    <!-- android:inputType="number" -->
+                </LinearLayout>
 <!--                <TextView-->
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content"-->
 <!--                    android:text="Максимальное количество правильно угаданных пропусков/замен за одну итерацию" />-->
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Правильных ответов в последний раз:" />
-                <TextView
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Правильных ответов в последний раз:" />
+                    <TextView
+                        android:id="@+id/lastCorrectAnsCountText"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Неправильных ответов в последний раз:" />
-                <TextView
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Неправильных ответов в последний раз:" />
+                    <TextView
+                        android:id="@+id/lastIncorrectAnsCountText"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                    <!-- android:inputType="number" -->
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Правильных ответов всего:" />
-                <TextView
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Правильных ответов всего:" />
+                    <TextView
+                        android:id="@+id/totalCorrectAnsCountText"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                    <!-- android:inputType="number" -->
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Неправильных ответов всего:" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Неправильных ответов всего:" />
+                    <TextView
+                        android:id="@+id/totalIncorrectAnsCountText"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                    <!-- android:inputType="number" -->
+                </LinearLayout>
+            </LinearLayout>
 
                 <Space
                     android:layout_weight="1"
@@ -163,15 +244,17 @@
                     android:layout_height="0dp" />
 
                 <EditText
+                    android:id="@+id/notesEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minLines="3"
-                    android:maxLines="3"
+                    android:minLines="4"
+                    android:maxLines="4"
                     android:background="#F0F0F0"
                     android:gravity="top"
+                    android:maxLength="100"
                     android:inputType="textMultiLine|textCapSentences"
                     android:scrollbars="vertical"
-                    android:text="Введите заметки" />
+                    android:hint="Введите заметки"/>
 
                 <Space
                     android:layout_weight="1"
@@ -183,6 +266,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:backgroundTint="#29A220"
                     android:text="Сохранить" />
                 <!-- Добавить -->
                 <LinearLayout
@@ -199,7 +283,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
-                        android:text="Вернуться" />
+                        android:text="Отмена" />
                     <ImageView
                         android:id="@+id/delete_button"
                         android:layout_width="60dp"

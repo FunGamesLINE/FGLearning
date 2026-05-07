@@ -56,7 +56,6 @@ class ViewPackagesFragment : Fragment() {
                 }
             }
         )
-
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = adapter

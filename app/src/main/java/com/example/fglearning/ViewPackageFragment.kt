@@ -56,15 +56,46 @@ class ViewPackageFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.markButton.setOnClickListener {
+            sessionViewModel.currentPacket.value?.let { packet ->
+                lifecycleScope.launch {
+                    val updatedPacket = packet.copy(marked = !packet.marked)
+                    packagesViewModel.addPackage(updatedPacket)
+                }
+            }
+        }
+
+        binding.deleteButton.setOnClickListener {
+            sessionViewModel.currentPacket.value?.let { packet ->
+                lifecycleScope.launch {
+                    packagesViewModel.deletePackage(packet)
+                }
+            }
+        }
+
+        sessionViewModel.currentPacket.observe(viewLifecycleOwner) { currentPacket ->
+            currentPacket?.let {
+                binding.packetName.setText(currentPacket.name)
+                binding.correctAnswersRecord.text = currentPacket.recordCountCorrect.toString()
+                binding.correctAnswersLastTime .text = currentPacket.lastCountCorrect.toString()
+                binding.incorrectAnswersLastTime.text = currentPacket.lastCountIncorrect.toString()
+            }
+        }
+
         sessionViewModel.adding.observe(viewLifecycleOwner) { isAdding ->
             if (isAdding) {
+                sessionViewModel.setCurrentPacket(null)
                 binding.deleteButton.visibility = View.GONE
                 binding.markButton.visibility = View.GONE
                 binding.stats.visibility = View.GONE
+                binding.packetName.setText("")
             } else {
                 binding.deleteButton.visibility = View.VISIBLE
                 binding.markButton.visibility = View.VISIBLE
                 binding.stats.visibility = View.VISIBLE
+                sessionViewModel.currentPacket.value?.let { currentPacket ->
+                    binding.packetName.setText(currentPacket.name)
+                }
             }
         }
 

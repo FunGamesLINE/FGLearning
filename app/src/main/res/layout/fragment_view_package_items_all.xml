@@ -22,10 +22,30 @@
         android:background="@color/light_gray"
         android:gravity="center">
         <TextView
+            android:id="@+id/exerciseTypeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"
             android:text="Упражнение"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Пакет:"
+            android:textSize="22sp"/>
+        <TextView
+            android:id="@+id/packetNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="_"
+            android:textSize="22sp"/>
     </LinearLayout>
 
     <TextView
@@ -33,21 +53,43 @@
         android:layout_height="wrap_content"
         android:textSize="30dp"
         android:text="Материалы"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Всего: 0"/>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:scrollbars="vertical"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <Button
-        android:id="@+id/add_packet_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Добавить" />
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/editPacketButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Редактировать пакет" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/addMaterialButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Добавить" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
 </LinearLayout>
 
 </FrameLayout>

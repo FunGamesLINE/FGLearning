@@ -24,7 +24,7 @@ class PackagesViewModel(
     val packets: LiveData<List<Package>> = _packets
 
     private var currentJob: Job? = null
-    private var currentExercise: Int = 0
+    //private var currentExercise: Int = 0
 
     fun loadPackages(exercise: Int) {
         currentJob?.cancel()
@@ -35,13 +35,19 @@ class PackagesViewModel(
             }
         }
     }
-    fun refresh() {
-        loadPackages(currentExercise)
-    }
+//    fun refresh() {
+//        loadPackages(currentExercise)
+//    }
 
     fun addPackage(packet: Package) {
         viewModelScope.launch {
             packageRepository.insert(packet)
+        }
+    }
+
+    fun deletePackage(packet: Package) {
+        viewModelScope.launch {
+            packageRepository.delete(packet)
         }
     }
 

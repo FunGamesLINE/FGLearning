@@ -4,10 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fglearning.database.entity.Package
+import com.example.fglearning.database.entity.PackageItem
 
 class SessionViewModel : ViewModel() {
     private val _currentPacket = MutableLiveData<Package?>()
     val currentPacket: LiveData<Package?> = _currentPacket
+
+    //private val _currentPacketItem = MutableLiveData<PackageItem?>()
+    //val currentPacketItem: LiveData<PackageItem?> = _currentPacketItem
 
     private val _exerciseType = MutableLiveData(1)
     val exerciseType: LiveData<Int> = _exerciseType
@@ -36,9 +40,13 @@ class SessionViewModel : ViewModel() {
         _exerciseType.value = exercise
     }
 
-    fun setCurrentPacket(packet: Package) {
+    fun setCurrentPacket(packet: Package?) {
         _currentPacket.value = packet
     }
+
+//    fun setCurrentPacketItem(packetItem: PackageItem) {
+//        _currentPacketItem.value = packetItem
+//    }
 
     //fun getAdding() = adding.value ?: false
 }

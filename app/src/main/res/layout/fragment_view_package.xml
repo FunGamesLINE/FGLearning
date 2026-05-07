@@ -30,13 +30,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
 
-                <EditText
-                    android:id="@+id/packetName"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:text="Название"
-                    android:gravity="center"/>
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/packetName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:maxLength="15"
+                        android:text=""
+                        android:hint="Название пакета"
+                        android:gravity="center"/>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:text="Рекордное количество верных ответов:" />
                         <TextView
-                            android:id="@+id/CorrectAnswersRecord"
+                            android:id="@+id/correctAnswersRecord"
                             android:layout_marginStart="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -129,6 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:backgroundTint="#29A220"
                     android:text="Сохранить" />
                 <!-- Добавить -->
                 <LinearLayout
@@ -145,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
-                        android:text="Вернуться" />
+                        android:text="Отмена" />
                     <ImageView
                         android:id="@+id/delete_button"
                         android:layout_width="60dp"

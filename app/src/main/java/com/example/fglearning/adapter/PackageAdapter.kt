@@ -57,7 +57,6 @@ class PackageAdapter(
             binding.markButton.setOnClickListener {
                 onMarkClick?.invoke(packageOne)
             }
-            //TODO
         }
     }
 

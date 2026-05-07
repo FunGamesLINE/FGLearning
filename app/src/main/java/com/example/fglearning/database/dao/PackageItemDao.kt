@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 import com.example.fglearning.database.entity.Package
 import com.example.fglearning.database.entity.PackageItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PackageItemDao {
@@ -16,6 +17,9 @@ interface PackageItemDao {
 
     @Query("SELECT * FROM elements WHERE id = :id")
     suspend fun getById(id: Int): PackageItem?
+
+    @Query("SELECT * FROM elements WHERE packetId = :packetId")
+    fun getByPacketId(packetId: Int): Flow<List<PackageItem>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIgnore(packageItem: PackageItem)

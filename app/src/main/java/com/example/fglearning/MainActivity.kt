@@ -66,23 +66,28 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.viewPackagesFragment -> {
                     sessionViewModel.setExerciseType(1)
+                    navigateToPackages()
                 }
                 R.id.flashcards -> {
                     //navController.navigate(R.id.action_viewPackagesFragment_to_runFlashcardsFragment)
                     sessionViewModel.setExerciseType(1)
+                    navigateToPackages()
                 }
                 R.id.accents -> {
                     //navController.navigate(R.id.action_viewPackagesFragment_to_runAccentFragment)
                     sessionViewModel.setExerciseType(2)
+                    navigateToPackages()
                 }
                 R.id.insert_letters -> {
                     //navController.navigate(R.id.action_viewPackagesFragment_to_runInsertlettersFragment)
                     sessionViewModel.setExerciseType(3)
+                    navigateToPackages()
                 }
             }
             binding.drawerLayout.closeDrawers()
             true
         }
+        //TODO Hide menu in some fragments and show it in other
         navController.addOnDestinationChangedListener { _, _, _ ->
             binding.drawerLayout.closeDrawers()
         }
@@ -116,5 +121,10 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.frame_content, ViewPackagesFragment())
                 .commit()
         }
+    }
+
+    private fun navigateToPackages() {
+        // очистка всего стека навигации до viewPackagesFragment
+        navController.popBackStack(R.id.viewPackagesFragment, inclusive = false)
     }
 }

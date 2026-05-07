@@ -7,20 +7,21 @@ import com.example.fglearning.database.entity.PackageItem
 import kotlinx.coroutines.flow.Flow
 
 class PackageItemRepository(private val packageItemDao: PackageItemDao) {
+    suspend fun getAll(): List<PackageItem> = packageItemDao.getAll()
 
-//    suspend fun getAll(): List<PackageItem>
-//
-//    suspend fun getById(id: Int): PackageItem?
-//
-//    suspend fun insertIgnore(packageItem: PackageItem)
-//
-//    suspend fun insertIgnore(packageItems: List<PackageItem>)
-//
-//    suspend fun insert(packageItem: PackageItem)
-//
-//    suspend fun insert(packageItems: List<PackageItem>)
-//
-//    suspend fun delete(packageItem: PackageItem)
-//
-//    suspend fun delete(packageItems: List<PackageItem>)
+    suspend fun getById(id: Int): PackageItem? = packageItemDao.getById(id)
+
+    fun getByPacketId(packetId: Int): Flow<List<PackageItem>> = packageItemDao.getByPacketId(packetId)
+
+    suspend fun insertIgnore(packageItem: PackageItem) = packageItemDao.insertIgnore(packageItem)
+
+    suspend fun insertIgnore(packageItems: List<PackageItem>) = packageItemDao.insertIgnore(packageItems)
+
+    suspend fun insert(packageItem: PackageItem) = packageItemDao.insert(packageItem)
+
+    suspend fun insert(packageItems: List<PackageItem>) = packageItemDao.insert(packageItems)
+
+    suspend fun delete(packageItem: PackageItem) = packageItemDao.delete(packageItem)
+
+    suspend fun delete(packageItems: List<PackageItem>) = packageItemDao.delete(packageItems)
 }
