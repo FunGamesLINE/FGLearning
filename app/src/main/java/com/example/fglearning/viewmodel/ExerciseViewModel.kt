@@ -16,6 +16,7 @@ import com.example.fglearning.repository.AccentRepository
 import com.example.fglearning.repository.FlashcardRepository
 import com.example.fglearning.repository.InsertLetterRepository
 import com.example.fglearning.repository.PackageItemRepository
+import com.example.fglearning.repository.PackageRepository
 import kotlinx.coroutines.launch
 
 class ExerciseViewModel(
@@ -23,6 +24,9 @@ class ExerciseViewModel(
 ) : AndroidViewModel(application) {
     private val packageItemsRepository: PackageItemRepository by lazy {
         PackageItemRepository(MaterialsDatabase.getInstance(getApplication()).packageItemDao())
+    }
+    private val packageRepository: PackageRepository by lazy {
+        PackageRepository(MaterialsDatabase.getInstance(getApplication()).packageDao())
     }
     private val flashcardRepository: FlashcardRepository by lazy {
         FlashcardRepository(MaterialsDatabase.getInstance(getApplication()).flashcardDao())
@@ -34,16 +38,16 @@ class ExerciseViewModel(
         InsertLetterRepository(MaterialsDatabase.getInstance(getApplication()).insertLetterDao())
     }
 
-    private val _element = MutableLiveData<PackageItem>()
-    val element: LiveData<PackageItem> = _element
+    private val _element = MutableLiveData<PackageItem?>()
+    val element: LiveData<PackageItem?> = _element
 
-    private val _flashcard = MutableLiveData<Flashcard>()
-    val flashcard: LiveData<Flashcard> = _flashcard
-    private val _accent = MutableLiveData<Accent>()
-    val accent: LiveData<Accent> = _accent
+    private val _flashcard = MutableLiveData<Flashcard?>()
+    val flashcard: LiveData<Flashcard?> = _flashcard
+    private val _accent = MutableLiveData<Accent?>()
+    val accent: LiveData<Accent?> = _accent
 
-    private val _insertLetter = MutableLiveData<InsertLetter>()
-    val insertLetter: LiveData<InsertLetter> = _insertLetter
+    private val _insertLetter = MutableLiveData<InsertLetter?>()
+    val insertLetter: LiveData<InsertLetter?> = _insertLetter
 
     fun setCurrentPacketItem(packet: Package?, elemId: Int) {
         viewModelScope.launch {
@@ -57,6 +61,45 @@ class ExerciseViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun setCurrentPacketItemNull() {
+        _element.value = null
+        _flashcard.value = null
+        _accent.value = null
+        _insertLetter.value = null
+    }
+
+    fun deletePackageItem(packetItem: PackageItem) {
+        viewModelScope.launch {
+            packageRepository.getById(packetItem.packetId)?.exercise.let { exercise ->
+                when (exercise) {
+                    1 -> flashcardRepository.deleteById(packetItem.id)
+                    2 -> accentRepository.deleteById(packetItem.id)
+                    3 -> insertLetterRepository.deleteById(packetItem.id)
+                }
+            }
+            packageItemsRepository.delete(packetItem)
+        }
+    }
+
+    fun addPackageItem(packetItem: PackageItem, flashcard: Flashcard) {
+        viewModelScope.launch {
+            packageItemsRepository.insert(packetItem)
+            flashcardRepository.insert(flashcard)
+        }
+    }
+    fun addPackageItem(packetItem: PackageItem, accent: Accent) {
+        viewModelScope.launch {
+            packageItemsRepository.insert(packetItem)
+            accentRepository.insert(accent)
+        }
+    }
+    fun addPackageItem(packetItem: PackageItem, insertLetter: InsertLetter) {
+        viewModelScope.launch {
+            packageItemsRepository.insert(packetItem)
+            insertLetterRepository.insert(insertLetter)
         }
     }
 

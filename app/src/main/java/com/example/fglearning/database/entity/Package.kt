@@ -8,7 +8,7 @@ data class Package(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val exercise: Int = 0,
+    val exercise: Int,
     val marked: Boolean = false,
     val lastCountCorrect: Int = 0,
     val lastCountIncorrect: Int = 0,

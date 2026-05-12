@@ -1,12 +1,17 @@
 package com.example.fglearning
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fglearning.adapter.PackageAdapter
@@ -33,20 +38,54 @@ class ViewPackageFragment : Fragment() {
     ): View? {
         binding = FragmentViewPackageBinding.inflate(layoutInflater)
 
+        var marked = sessionViewModel.currentPacket.value?.marked
+        fun checkSaveButton() {
+            val name = binding.packetName.text.toString()
+            val currMarked = sessionViewModel.currentPacket.value?.marked
+            val currName = sessionViewModel.currentPacket.value?.name
+            if (name.isNotBlank() && (name != currName || marked != currMarked)) {
+                binding.saveButton.visibility = View.VISIBLE
+            }
+            else {
+                binding.saveButton.visibility = View.INVISIBLE
+            }
+        }
+
         sessionViewModel.exerciseType.observe(viewLifecycleOwner) { exerciseType ->
             binding.exerciseType.setExerciseType(exerciseType)
         }
+
+        binding.packetName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkSaveButton()
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
 
         binding.saveButton.setOnClickListener {
             val name = binding.packetName.text.toString()
             val exercise = sessionViewModel.exerciseType.value
             if (name.isNotEmpty() && exercise != null) {
-                lifecycleScope.launch {
-                    val packet = Package(
-                        name = name,
-                        exercise = exercise
-                    )
-                    packagesViewModel.addPackage(packet)
+                if (sessionViewModel.adding.value == true) {
+                    lifecycleScope.launch {
+                        val packet = Package(
+                            name = name,
+                            exercise = exercise
+                        )
+                        packagesViewModel.addPackage(packet)
+                    }
+                }
+                else {
+                    sessionViewModel.currentPacket.value?.let { packet ->
+                        lifecycleScope.launch {
+                            val updatedPacket = packet.copy(name = name, marked = marked ?: false)
+                            packagesViewModel.addPackage(updatedPacket)
+                            sessionViewModel.setCurrentPacket(updatedPacket)
+                        }
+                    }
                 }
             }
             findNavController().popBackStack()
@@ -57,19 +96,38 @@ class ViewPackageFragment : Fragment() {
         }
 
         binding.markButton.setOnClickListener {
-            sessionViewModel.currentPacket.value?.let { packet ->
-                lifecycleScope.launch {
-                    val updatedPacket = packet.copy(marked = !packet.marked)
-                    packagesViewModel.addPackage(updatedPacket)
-                }
+            if (marked == true) {
+                marked = false
+                binding.markButton.setImageResource(R.drawable.bookmark)
             }
+            else {
+                marked = true
+                binding.markButton.setImageResource(R.drawable.baseline_bookmark)
+            }
+            checkSaveButton()
         }
 
         binding.deleteButton.setOnClickListener {
             sessionViewModel.currentPacket.value?.let { packet ->
-                lifecycleScope.launch {
-                    packagesViewModel.deletePackage(packet)
-                }
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Подтверждение")
+                    .setMessage("Вы действительно хотите удалить этот пакет?")
+                    .setPositiveButton("Да") { dialog, _ ->
+                        lifecycleScope.launch {
+                            packagesViewModel.deletePackage(packet)
+                        }
+                        dialog.dismiss()
+                        Toast.makeText(requireContext(), "Пакет \"${sessionViewModel.currentPacket.value?.name.toString()}\" удалён", Toast.LENGTH_SHORT).show()
+                        sessionViewModel.setCurrentPacket(null)
+                        findNavController().popBackStack(R.id.viewPackagesFragment, inclusive = false)
+                    }
+                    .setNegativeButton("Отмена") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    /*.setNeutralButton("Отмена") { dialog, _ ->
+                        dialog.dismiss()
+                    }*/
+                    .show()
             }
         }
 
@@ -79,8 +137,13 @@ class ViewPackageFragment : Fragment() {
                 binding.correctAnswersRecord.text = currentPacket.recordCountCorrect.toString()
                 binding.correctAnswersLastTime .text = currentPacket.lastCountCorrect.toString()
                 binding.incorrectAnswersLastTime.text = currentPacket.lastCountIncorrect.toString()
+                if (currentPacket.marked) binding.markButton.setImageResource(R.drawable.baseline_bookmark)
+                else binding.markButton.setImageResource(R.drawable.bookmark)
             }
         }
+
+        binding.difficultiesCount.visibility = View.GONE
+        //TODO write code for difficultiesCount in ViewPackage fragment
 
         sessionViewModel.adding.observe(viewLifecycleOwner) { isAdding ->
             if (isAdding) {

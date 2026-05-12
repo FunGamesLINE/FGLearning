@@ -7,4 +7,10 @@ import com.example.fglearning.database.entity.InsertLetter
 
 class FlashcardRepository(private val flashcardDao: FlashcardDao) {
     suspend fun getById(id: Int): Flashcard? = flashcardDao.getById(id)
+
+    suspend fun deleteById(id: Int) = flashcardDao.deleteById(id)
+
+    suspend fun insert(flashcard: Flashcard) = flashcardDao.insert(flashcard)
+
+    suspend fun insert(flashcards: List<Flashcard>) = flashcardDao.insert(flashcards)
 }

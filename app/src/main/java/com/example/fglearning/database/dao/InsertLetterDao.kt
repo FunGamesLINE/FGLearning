@@ -18,20 +18,23 @@ interface InsertLetterDao {
     suspend fun getById(id: Int): InsertLetter?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertIgnore(accent: Accent)
+    suspend fun insertIgnore(insertLetter: InsertLetter)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertIgnore(accents: List<Accent>)
+    suspend fun insertIgnore(insertLetterList: List<InsertLetter>)
 
     @Upsert()
-    suspend fun insert(accent: Accent)
+    suspend fun insert(insertLetter: InsertLetter)
 
     @Upsert()
-    suspend fun insert(accents: List<Accent>)
+    suspend fun insert(insertLetterList: List<InsertLetter>)
 
     @Delete()
-    suspend fun delete(accent: Accent)
+    suspend fun delete(insertLetter: InsertLetter)
 
     @Delete()
-    suspend fun delete(accents: List<Accent>)
+    suspend fun delete(insertLetterList: List<InsertLetter>)
+
+    @Query("DELETE FROM insertLetter WHERE id = :id")
+    suspend fun deleteById(id: Int)
 }

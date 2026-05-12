@@ -34,4 +34,7 @@ interface AccentDao {
 
     @Delete()
     suspend fun delete(accents: List<Accent>)
+
+    @Query("DELETE FROM accent WHERE id = :id")
+    suspend fun deleteById(id: Int)
 }

@@ -124,6 +124,58 @@
                             android:layout_height="wrap_content"
                             android:text="0" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/difficultiesCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Материалы по сложности (от лёгкой к трудной): " />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/countEasyDifficulty"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/green"
+                                android:layout_weight="1"
+                                android:text="0" />
+                            <TextView
+                                android:id="@+id/countNotBadDifficulty"
+                                android:gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#FFEB3B"
+                                android:layout_weight="1"
+                                android:text="0" />
+                            <TextView
+                                android:id="@+id/countBadDifficulty"
+                                android:gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#FF9800"
+                                android:textColor="@color/white"
+                                android:layout_weight="1"
+                                android:text="0" />
+                            <TextView
+                                android:id="@+id/countHardDifficulty"
+                                android:gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/red"
+                                android:textColor="@color/white"
+                                android:layout_weight="1"
+                                android:text="0" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <Space

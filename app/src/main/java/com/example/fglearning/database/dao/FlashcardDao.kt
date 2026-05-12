@@ -34,4 +34,7 @@ interface FlashcardDao {
 
     @Delete()
     suspend fun delete(flashcards: List<Flashcard>)
+
+    @Query("DELETE FROM flashcard WHERE id = :id")
+    suspend fun deleteById(id: Int)
 }

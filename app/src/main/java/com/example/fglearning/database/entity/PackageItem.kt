@@ -18,9 +18,13 @@ import androidx.room.PrimaryKey
 data class PackageItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val packetId: Int = 0, //foreign
+    val packetId: Int, //foreign
     val difficulty: Int = 0,
     val marked: Boolean = false,
-    val notes: String,
-    val lastViewTimestamp: Long
+    val notes: String = "",
+    val lastViewTimestamp: Long = -1,
+    val lastCountCorrect: Int = 0,
+    val lastCountIncorrect: Int = 0,
+    val totalCountCorrect: Int = 0,
+    val totalCountIncorrect: Int = 0
 )
