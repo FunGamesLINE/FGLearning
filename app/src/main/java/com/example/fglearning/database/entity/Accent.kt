@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 )
 data class Accent(
     @PrimaryKey
-    val id: Int = 0, //foreign
+    val id: Long = 0, //foreign
     val word: String,
     val accentPos: Int
 )

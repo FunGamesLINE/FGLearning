@@ -39,7 +39,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:maxLength="15"
+                        android:maxLength="20"
                         android:text=""
                         android:hint="Название пакета"
                         android:gravity="center"/>
@@ -59,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:text="0" />
+                        android:text="ExerciseName" />
                 </LinearLayout>
 
                 <Space
@@ -133,6 +133,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Материалы по сложности (от лёгкой к трудной): " />
+                        <!-- TODO + не выбранная сложность серым цветом -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -151,7 +152,7 @@
                                 android:layout_marginStart="2dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="#FFEB3B"
+                                android:background="@color/yellow"
                                 android:layout_weight="1"
                                 android:text="0" />
                             <TextView
@@ -160,7 +161,7 @@
                                 android:layout_marginStart="2dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="#FF9800"
+                                android:background="@color/orange"
                                 android:textColor="@color/white"
                                 android:layout_weight="1"
                                 android:text="0" />

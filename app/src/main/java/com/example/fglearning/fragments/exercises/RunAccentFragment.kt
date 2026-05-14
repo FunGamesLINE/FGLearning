@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fglearning.R
+import com.example.fglearning.databinding.FragmentRunAccentBinding
 
 class RunAccentFragment : Fragment() {
+    lateinit var binding: FragmentRunAccentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +19,8 @@ class RunAccentFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_run_accent, container, false)
+        binding = FragmentRunAccentBinding.inflate(layoutInflater)
+
+        return binding.root
     }
 }

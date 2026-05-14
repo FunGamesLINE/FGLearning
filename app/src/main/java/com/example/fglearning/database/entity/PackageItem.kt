@@ -17,8 +17,8 @@ import androidx.room.PrimaryKey
 )
 data class PackageItem(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val packetId: Int, //foreign
+    val id: Long = 0,
+    val packetId: Long, //foreign
     val difficulty: Int = 0,
     val marked: Boolean = false,
     val notes: String = "",

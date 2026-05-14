@@ -6,9 +6,9 @@ import com.example.fglearning.database.entity.InsertLetter
 import com.example.fglearning.database.entity.PackageItem
 
 class InsertLetterRepository(private val insertLetterDao: InsertLetterDao) {
-    suspend fun getById(id: Int): InsertLetter? = insertLetterDao.getById(id)
+    suspend fun getById(id: Long): InsertLetter? = insertLetterDao.getById(id)
 
-    suspend fun deleteById(id: Int) = insertLetterDao.deleteById(id)
+    suspend fun deleteById(id: Long) = insertLetterDao.deleteById(id)
 
     suspend fun insert(insertLetter: InsertLetter) = insertLetterDao.insert(insertLetter)
 

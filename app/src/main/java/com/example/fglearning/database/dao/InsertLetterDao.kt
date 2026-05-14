@@ -15,10 +15,10 @@ interface InsertLetterDao {
     suspend fun getAll(): List<InsertLetter>
 
     @Query("SELECT * FROM insertLetter WHERE id = :id")
-    suspend fun getById(id: Int): InsertLetter?
+    suspend fun getById(id: Long): InsertLetter?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertIgnore(insertLetter: InsertLetter)
+    suspend fun insertIgnore(insertLetter: InsertLetter): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIgnore(insertLetterList: List<InsertLetter>)
@@ -36,5 +36,5 @@ interface InsertLetterDao {
     suspend fun delete(insertLetterList: List<InsertLetter>)
 
     @Query("DELETE FROM insertLetter WHERE id = :id")
-    suspend fun deleteById(id: Int)
+    suspend fun deleteById(id: Long)
 }

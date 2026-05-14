@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "packets")
 data class Package(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Long = 0,
     val name: String,
     val exercise: Int,
     val marked: Boolean = false,

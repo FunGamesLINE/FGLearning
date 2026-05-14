@@ -13,7 +13,7 @@ interface PackageDao {
     fun getAll(): Flow<List<Package>>
 
     @Query("SELECT * FROM packets WHERE id = :id")
-    suspend fun getById(id: Int): Package?
+    suspend fun getById(id: Long): Package?
 
     @Query("SELECT * FROM packets WHERE exercise = :exercise")
     fun getByExercise(exercise: Int): Flow<List<Package>>

@@ -34,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="25dp"
+                    android:maxLength="30"
                     android:hint="Заголовок/слово"
                     android:gravity="center"/>
                 <EditText
@@ -85,6 +86,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:digits="0123456789,"
+                            android:maxLength="100"
                             android:hint="1,2,3"
                             android:text="" />
                         <!-- android:inputType="number" -->

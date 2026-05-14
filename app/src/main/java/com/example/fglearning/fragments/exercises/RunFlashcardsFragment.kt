@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.fglearning.R
+import com.example.fglearning.databinding.FragmentRunFlashcardsBinding
 
 class RunFlashcardsFragment : Fragment() {
+    lateinit var binding: FragmentRunFlashcardsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -16,7 +19,8 @@ class RunFlashcardsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_run_flashcards, container, false)
+        binding = FragmentRunFlashcardsBinding.inflate(layoutInflater)
+
+        return binding.root
     }
 }

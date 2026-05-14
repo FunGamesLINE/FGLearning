@@ -9,15 +9,29 @@ import kotlinx.coroutines.flow.Flow
 class PackageItemRepository(private val packageItemDao: PackageItemDao) {
     suspend fun getAll(): List<PackageItem> = packageItemDao.getAll()
 
-    suspend fun getById(id: Int): PackageItem? = packageItemDao.getById(id)
+    suspend fun getById(id: Long): PackageItem? = packageItemDao.getById(id)
 
-    fun getByPacketId(packetId: Int): Flow<List<PackageItem>> = packageItemDao.getByPacketId(packetId)
+    fun getByPacketId(packetId: Long): Flow<List<PackageItem>> = packageItemDao.getByPacketId(packetId)
 
-    suspend fun insertIgnore(packageItem: PackageItem) = packageItemDao.insertIgnore(packageItem)
+    suspend fun insertIgnore(packageItem: PackageItem): Long = packageItemDao.insertIgnore(packageItem)
 
     suspend fun insertIgnore(packageItems: List<PackageItem>) = packageItemDao.insertIgnore(packageItems)
 
-    suspend fun insert(packageItem: PackageItem) = packageItemDao.insert(packageItem)
+    suspend fun insert(packageItem: PackageItem): Long {
+        return if (packageItem.id == 0L) {
+            //новый элемент
+            packageItemDao.insert(packageItem)
+        } else {
+            //существующий элемент
+            val existing = packageItemDao.getById(packageItem.id)
+            if (existing == null) {
+                packageItemDao.insert(packageItem)
+            } else {
+                packageItemDao.update(packageItem)
+                packageItem.id
+            }
+        }
+    }
 
     suspend fun insert(packageItems: List<PackageItem>) = packageItemDao.insert(packageItems)
 

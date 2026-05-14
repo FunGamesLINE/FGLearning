@@ -26,7 +26,6 @@ class ViewPackageItemsAllFragment : Fragment() {
     lateinit var binding: FragmentViewPackageItemsAllBinding
     private val sessionViewModel: SessionViewModel by activityViewModels()
     private val packageItemsViewModel: PackageItemsViewModel by activityViewModels()
-    private val packagesViewModel: PackagesViewModel by activityViewModels()
     private val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,13 +40,19 @@ class ViewPackageItemsAllFragment : Fragment() {
 
         val adapter = PackageItemAdapter(
             mutableListOf(),
-            onItemClick = { packetItem ->
-                exerciseViewModel.setCurrentPacketItem(sessionViewModel.currentPacket.value, packetItem.id)
-                findNavController().navigate(R.id.action_viewPackageItemsAllFragment_to_viewPackageItemFragment)
+            sessionViewModel.exerciseType.value,
+            onItemClick = { item ->
+                sessionViewModel.setAdding(false)
+                exerciseViewModel.setCurrentPacketItem(
+                    sessionViewModel.currentPacket.value,
+                    item.packageItem.id
+                ) {
+                    findNavController().navigate(R.id.action_viewPackageItemsAllFragment_to_viewPackageItemFragment)
+                }
             },
-            onMarkClick = { packetItem ->
+            onMarkClick = { item ->
                 lifecycleScope.launch {
-                    val updatedPacketItem = packetItem.copy(marked = !packetItem.marked)
+                    val updatedPacketItem = item.packageItem.copy(marked = !item.packageItem.marked)
                     packageItemsViewModel.addPacketItem(updatedPacketItem)
                 }
             }
@@ -57,14 +62,14 @@ class ViewPackageItemsAllFragment : Fragment() {
             this.adapter = adapter
         }
 
-        packageItemsViewModel.packageItems.observe(viewLifecycleOwner) { packageItems ->
-            adapter.setItems(packageItems)
+        packageItemsViewModel.packageItemsWithData.observe(viewLifecycleOwner) { packageItemsWithData ->
+            adapter.setItems(packageItemsWithData)
         }
 
         sessionViewModel.currentPacket.observe(viewLifecycleOwner) { currentPacket ->
             currentPacket?.let {
                 binding.packetNameText.text = currentPacket.name
-                packageItemsViewModel.loadPacketItems(currentPacket.id)
+                packageItemsViewModel.loadPacketItems(currentPacket.id, currentPacket.exercise)
             }
         }
 

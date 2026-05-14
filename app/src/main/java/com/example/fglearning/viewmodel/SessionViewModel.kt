@@ -22,7 +22,8 @@ class SessionViewModel : ViewModel() {
     private val _adding = MutableLiveData(false)
     val adding: LiveData<Boolean> = _adding
 
-
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun finishExercise() {
         _shouldShowResults.value = true
@@ -34,6 +35,10 @@ class SessionViewModel : ViewModel() {
 
     fun setAdding(adding: Boolean) {
         _adding.value = adding
+    }
+
+    fun setLoading(isLoading: Boolean) {
+        _isLoading.value = isLoading
     }
 
     fun setExerciseType(exercise: Int) {

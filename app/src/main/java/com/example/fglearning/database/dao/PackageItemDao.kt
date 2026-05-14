@@ -16,22 +16,28 @@ interface PackageItemDao {
     suspend fun getAll(): List<PackageItem>
 
     @Query("SELECT * FROM elements WHERE id = :id")
-    suspend fun getById(id: Int): PackageItem?
+    suspend fun getById(id: Long): PackageItem?
 
     @Query("SELECT * FROM elements WHERE packetId = :packetId")
-    fun getByPacketId(packetId: Int): Flow<List<PackageItem>>
+    fun getByPacketId(packetId: Long): Flow<List<PackageItem>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertIgnore(packageItem: PackageItem)
+    suspend fun insertIgnore(packageItem: PackageItem): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIgnore(packageItems: List<PackageItem>)
 
-    @Upsert()
-    suspend fun insert(packageItem: PackageItem)
+    @Insert()
+    suspend fun insert(packageItem: PackageItem): Long
+
+    @Insert()
+    suspend fun insert(packageItems: List<PackageItem>)
 
     @Upsert()
-    suspend fun insert(packageItems: List<PackageItem>)
+    suspend fun update(packageItem: PackageItem)
+
+    @Upsert()
+    suspend fun update(packageItems: List<PackageItem>)
 
     @Delete()
     suspend fun delete(packageItem: PackageItem)

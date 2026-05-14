@@ -15,10 +15,10 @@ interface AccentDao {
     suspend fun getAll(): List<Accent>
 
     @Query("SELECT * FROM accent WHERE id = :id")
-    suspend fun getById(id: Int): Accent?
+    suspend fun getById(id: Long): Accent?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertIgnore(accent: Accent)
+    suspend fun insertIgnore(accent: Accent): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIgnore(accents: List<Accent>)
@@ -36,5 +36,5 @@ interface AccentDao {
     suspend fun delete(accents: List<Accent>)
 
     @Query("DELETE FROM accent WHERE id = :id")
-    suspend fun deleteById(id: Int)
+    suspend fun deleteById(id: Long)
 }

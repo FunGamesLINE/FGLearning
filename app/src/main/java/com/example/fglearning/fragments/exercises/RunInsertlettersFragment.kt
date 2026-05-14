@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.fglearning.R
+import com.example.fglearning.databinding.FragmentRunInsertlettersBinding
 
 class RunInsertlettersFragment : Fragment() {
+    lateinit var binding: FragmentRunInsertlettersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +19,8 @@ class RunInsertlettersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_run_insertletters, container, false)
+        binding = FragmentRunInsertlettersBinding.inflate(layoutInflater)
+        
+        return binding.root
     }
 }

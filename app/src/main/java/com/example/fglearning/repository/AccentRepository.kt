@@ -7,9 +7,9 @@ import com.example.fglearning.database.entity.Flashcard
 import com.example.fglearning.database.entity.InsertLetter
 
 class AccentRepository(private val accentDao: AccentDao) {
-    suspend fun getById(id: Int): Accent? = accentDao.getById(id)
+    suspend fun getById(id: Long): Accent? = accentDao.getById(id)
 
-    suspend fun deleteById(id: Int) = accentDao.deleteById(id)
+    suspend fun deleteById(id: Long) = accentDao.deleteById(id)
 
     suspend fun insert(accent: Accent) = accentDao.insert(accent)
 

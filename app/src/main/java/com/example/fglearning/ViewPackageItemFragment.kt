@@ -50,6 +50,8 @@ class ViewPackageItemFragment : Fragment() {
     ): View? {
         binding = FragmentViewPackageItemBinding.inflate(layoutInflater)
 
+        var marked = exerciseViewModel.element.value?.marked
+
         fun isStringPositionsCorrect(positions: String): Boolean {
             val positions = positions.replace(" ", "")
             val posList = positions.split(",")
@@ -66,62 +68,93 @@ class ViewPackageItemFragment : Fragment() {
             return true
         }
 
-        var marked = exerciseViewModel.element.value?.marked
-        fun checkSaveButton() {
-            val currMarked = exerciseViewModel.element.value?.marked
-            val currNotes = exerciseViewModel.element.value?.notes
-            val currDifficulty = exerciseViewModel.element.value?.difficulty
-
-            if (
-                marked != currMarked ||
-                binding.notesEditText.text.toString() != currNotes ||
-                binding.difficultySpinner.selectedItemPosition != currDifficulty
-                ) {
-                when (sessionViewModel.exerciseType.value) {
-                    1 -> {
-                        if (
-                            binding.firstEditText.text.isNotBlank() &&
+        fun isInputValid(): Boolean {
+            return when (sessionViewModel.exerciseType.value) {
+                1 -> {
+                    binding.firstEditText.text.isNotBlank() &&
                             binding.secondEditText.text.isNotBlank()
-                            ) {
-                            binding.saveButton.visibility = View.VISIBLE
-                        }
-                        else {
-                            binding.saveButton.visibility = View.INVISIBLE
-                        }
-                    }
-                    2 -> {
-                        val content = binding.contentEditText.text
-                        val position = binding.positionsEditText.text.toString()
-                        val positionInt = position.toIntOrNull()
-                        if (
-                            content.isNotBlank() &&
+                }
+                2 -> {
+                    val content = binding.contentEditText.text
+                    val position = binding.positionsEditText.text.toString()
+                    val positionInt = position.toIntOrNull()
+
+                    content.isNotBlank() &&
                             content.length > 1 &&
                             position.isNotBlank() &&
                             positionInt != null &&
                             positionInt in 1..content.length
-                            ) {
-                            binding.saveButton.visibility = View.VISIBLE
-                        }
-                        else {
-                            binding.saveButton.visibility = View.INVISIBLE
-                        }
-                    }
-                    3 -> {
-                        val content = binding.contentEditText.text
-                        val position = binding.positionsEditText.text.toString()
-                        if (
-                            content.isNotBlank() &&
+                }
+                3 -> {
+                    val content = binding.contentEditText.text
+                    val position = binding.positionsEditText.text.toString()
+
+                    content.isNotBlank() &&
                             content.length > 1 &&
                             position.isNotBlank() &&
                             isStringPositionsCorrect(position)
-                            ) {
-                            binding.saveButton.visibility = View.VISIBLE
-                        }
-                        else {
-                            binding.saveButton.visibility = View.INVISIBLE
-                        }
-                    }
                 }
+                else -> false
+            }
+        }
+
+        fun hasContentChanges(): Boolean {
+            val notes = binding.notesEditText.text.toString()
+            val difficulty = binding.difficultySpinner.selectedItemPosition
+            val currMarked = exerciseViewModel.element.value?.marked
+            val currNotes = exerciseViewModel.element.value?.notes
+            val currDifficulty = exerciseViewModel.element.value?.difficulty
+
+            if (marked != currMarked ||
+                notes != currNotes ||
+                difficulty != currDifficulty) {
+                return true
+            }
+            else {
+                return when (sessionViewModel.exerciseType.value) {
+                    1 -> {
+                        val front = binding.firstEditText.text.toString()
+                        val back = binding.secondEditText.text.toString()
+                        val currFront = exerciseViewModel.flashcard.value?.frontText
+                        val currBack = exerciseViewModel.flashcard.value?.backText
+
+                        front != currFront ||
+                                back != currBack
+                    }
+
+                    2 -> {
+                        val content = binding.contentEditText.text
+                        val position = binding.positionsEditText.text.toString().toIntOrNull()
+                        val currContent = exerciseViewModel.accent.value?.word
+                        val currPosition = exerciseViewModel.accent.value?.accentPos
+
+                        content.toString() != currContent ||
+                                position != currPosition
+                    }
+
+                    3 -> {
+                        val content = binding.contentEditText.text
+                        val positions = binding.positionsEditText.text.toString()
+                        val currContent = exerciseViewModel.insertLetter.value?.word
+                        val currPositions = exerciseViewModel.insertLetter.value?.gaps
+
+                        content.toString() != currContent ||
+                                positions != currPositions
+                    }
+
+                    else -> false
+                }
+            }
+        }
+
+        fun checkSaveButton() {
+
+
+            if (
+                isInputValid() &&
+                hasContentChanges()
+            ) {
+                binding.saveButton.visibility = View.VISIBLE
             }
             else binding.saveButton.visibility = View.INVISIBLE
         }
@@ -219,6 +252,10 @@ class ViewPackageItemFragment : Fragment() {
                 binding.markButton.setImageResource(R.drawable.baseline_bookmark)
             }
             checkSaveButton()
+        }
+
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         binding.saveButton.setOnClickListener {
@@ -350,23 +387,6 @@ class ViewPackageItemFragment : Fragment() {
         }
 
         sessionViewModel.exerciseType.observe(viewLifecycleOwner) { exerciseType ->
-            if (sessionViewModel.adding.value != true) {
-                exerciseViewModel.element.value?.let { element ->
-                    binding.difficultySpinner.setSelection(element.difficulty)
-                    var format: String = "никогда"
-                    if (element.lastViewTimestamp != -1L) {
-                        val date = Date(element.lastViewTimestamp * 1000)  //миллисекунды
-                        format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(date)
-                    }
-                    binding.lastViewText.text = format
-                    binding.notesEditText.setText(element.notes)
-                    binding.lastCorrectAnsCountText.text = element.lastCountCorrect.toString()
-                    binding.lastIncorrectAnsCountText.text = element.lastCountIncorrect.toString()
-                    binding.totalCorrectAnsCountText.text = element.totalCountCorrect.toString()
-                    binding.totalIncorrectAnsCountText.text = element.totalCountIncorrect.toString()
-                }
-            }
-
             when (exerciseType) {
                 1 -> {
                     binding.positions.visibility = View.GONE
@@ -391,11 +411,12 @@ class ViewPackageItemFragment : Fragment() {
                     binding.positionsEditText.maxEms = 2
                     binding.positionsEditText.inputType = InputType.TYPE_NUMBER_VARIATION_NORMAL //"number"
                     binding.positionsEditText.setKeyListener(DigitsKeyListener.getInstance("0123456789"))
+
                     exerciseViewModel.accent.value?.let { accent ->
                         if (binding.contentEditText.text.length > 1) binding.positionsHintText.text = "*Введите позицию ударения от 1 до " + binding.contentEditText.text.length
                         else binding.positionsHintText.text = "*Введите позицию ударения"
                         binding.contentEditText.setText(accent.word)
-                        binding.positionsEditText.setText(accent.accentPos)
+                        binding.positionsEditText.setText(accent.accentPos.toString())
                     }
                 }
                 3 -> {
@@ -409,7 +430,7 @@ class ViewPackageItemFragment : Fragment() {
                     binding.positionsEditText.hint = "1,2,3"
                     binding.positionsEditText.maxEms = 20
                     binding.positionsEditText.inputType = InputType.TYPE_TEXT_VARIATION_NORMAL //"number + ,"
-                    binding.positionsEditText.setKeyListener(DigitsKeyListener.getInstance("0123456789"))
+                    binding.positionsEditText.setKeyListener(DigitsKeyListener.getInstance("0123456789,"))
 
                     exerciseViewModel.insertLetter.value?.let { insertLetter ->
                         if (binding.contentEditText.text.length > 1) binding.positionsHintText.text = "*Введите пропуски в виде: 1,2,3 (от 1 до " + binding.contentEditText.text.length + ")"
@@ -419,7 +440,6 @@ class ViewPackageItemFragment : Fragment() {
                     }
                 }
             }
-            //TODO адаптация фрагмента под текущее упражнение И связь с isAdding
         }
 
         sessionViewModel.adding.observe(viewLifecycleOwner) { isAdding ->
@@ -438,6 +458,23 @@ class ViewPackageItemFragment : Fragment() {
                 binding.deleteButton.visibility = View.VISIBLE
                 binding.markButton.visibility = View.VISIBLE
                 binding.stats.visibility = View.VISIBLE
+
+                exerciseViewModel.element.value?.let { element ->
+                    binding.difficultySpinner.setSelection(element.difficulty)
+                    var format: String = "никогда"
+                    if (element.lastViewTimestamp != -1L) {
+                        val date = Date(element.lastViewTimestamp * 1000)  //миллисекунды
+                        format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(date)
+                    }
+                    binding.lastViewText.text = format
+                    binding.notesEditText.setText(element.notes)
+                    binding.lastCorrectAnsCountText.text = element.lastCountCorrect.toString()
+                    binding.lastIncorrectAnsCountText.text = element.lastCountIncorrect.toString()
+                    binding.totalCorrectAnsCountText.text = element.totalCountCorrect.toString()
+                    binding.totalIncorrectAnsCountText.text = element.totalCountIncorrect.toString()
+                    if (exerciseViewModel.element.value?.marked == false) binding.markButton.setImageResource(R.drawable.bookmark)
+                    else binding.markButton.setImageResource(R.drawable.baseline_bookmark)
+                }
 
                 /*exerciseViewModel.element.value?.let { element ->
                     binding.contentEditText.setText("")

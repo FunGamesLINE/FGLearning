@@ -15,10 +15,10 @@ interface FlashcardDao {
     suspend fun getAll(): List<Flashcard>
 
     @Query("SELECT * FROM flashcard WHERE id = :id")
-    suspend fun getById(id: Int): Flashcard?
+    suspend fun getById(id: Long): Flashcard?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertIgnore(flashcard: Flashcard)
+    suspend fun insertIgnore(flashcard: Flashcard): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIgnore(flashcards: List<Flashcard>)
@@ -36,5 +36,5 @@ interface FlashcardDao {
     suspend fun delete(flashcards: List<Flashcard>)
 
     @Query("DELETE FROM flashcard WHERE id = :id")
-    suspend fun deleteById(id: Int)
+    suspend fun deleteById(id: Long)
 }

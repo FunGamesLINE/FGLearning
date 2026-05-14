@@ -5,10 +5,196 @@
     android:layout_height="match_parent"
     tools:context=".fragments.exercises.RunFlashcardsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/countEasyDifficultyText"
+                android:gravity="center"
+                android:layout_marginStart="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/green"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="0" />
+            <TextView
+                android:id="@+id/countNotBadDifficultyText"
+                android:gravity="center"
+                android:layout_marginStart="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="0" />
+            <TextView
+                android:id="@+id/countBadDifficultyText"
+                android:gravity="center"
+                android:layout_marginStart="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/orange"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="0" />
+            <TextView
+                android:id="@+id/countHardDifficultyText"
+                android:gravity="center"
+                android:layout_marginStart="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="0" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Осталось:"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/countLeftText"
+                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="15sp"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/firstText"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="26dp"
+            android:text="First"/>
+        <LinearLayout
+            android:id="@+id/answerAndSeparatorLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:foreground="@color/gray"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
+            <TextView
+                android:id="@+id/secondText"
+                android:gravity="center"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26dp"
+                android:text="Second"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"/>
+
+        <TextView
+            android:id="@+id/showAnswerButton"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/purple"
+            android:text="Показать ответ"
+            android:gravity="center"
+            android:layout_weight="0.1"
+            android:textColor="@color/white"
+            android:textSize="22dp"/>
+
+        <EditText
+            android:id="@+id/notesEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="4"
+            android:maxLines="4"
+            android:background="#F0F0F0"
+            android:gravity="top"
+            android:maxLength="100"
+            android:inputType="textMultiLine|textCapSentences"
+            android:scrollbars="vertical"
+            android:hint="Введите заметки"/>
+
+        <LinearLayout
+            android:id="@+id/setDifficultyButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/setDifficultyHardButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/red"
+                android:text="Сложно"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="22dp"/>
+            <TextView
+                android:id="@+id/setDifficultyBadButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/orange"
+                android:text="Плохо"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="22dp"/>
+            <TextView
+                android:id="@+id/setDifficultyNotBadButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/yellow"
+                android:text="Неплохо"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="22dp"/>
+            <TextView
+                android:id="@+id/setDifficultyEasyButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/green"
+                android:text="Легко"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="22dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </FrameLayout>

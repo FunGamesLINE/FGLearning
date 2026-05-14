@@ -9,7 +9,7 @@ class PackageRepository(private val packageDao: PackageDao) {
 
     fun getAll(): Flow<List<Package>> = packageDao.getAll()
 
-    suspend fun getById(id: Int): Package? = packageDao.getById(id)
+    suspend fun getById(id: Long): Package? = packageDao.getById(id)
 
     suspend fun insert(packet: Package) = packageDao.insert(packet)
 
