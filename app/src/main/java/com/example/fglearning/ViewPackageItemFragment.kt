@@ -68,6 +68,12 @@ class ViewPackageItemFragment : Fragment() {
             return true
         }
 
+        fun isAccentPositionCorrect(word: String, position: Int): Boolean {
+            val vowels = setOf('а', 'е', 'ё', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я',
+                                'a', 'e', 'i', 'o', 'u', 'y')
+            return word[position-1] in vowels
+        }
+
         fun isInputValid(): Boolean {
             return when (sessionViewModel.exerciseType.value) {
                 1 -> {
@@ -75,7 +81,7 @@ class ViewPackageItemFragment : Fragment() {
                             binding.secondEditText.text.isNotBlank()
                 }
                 2 -> {
-                    val content = binding.contentEditText.text
+                    val content = binding.contentEditText.text.toString()
                     val position = binding.positionsEditText.text.toString()
                     val positionInt = position.toIntOrNull()
 
@@ -83,7 +89,8 @@ class ViewPackageItemFragment : Fragment() {
                             content.length > 1 &&
                             position.isNotBlank() &&
                             positionInt != null &&
-                            positionInt in 1..content.length
+                            positionInt in 1..content.length &&
+                            isAccentPositionCorrect(content, positionInt)
                 }
                 3 -> {
                     val content = binding.contentEditText.text
@@ -148,8 +155,6 @@ class ViewPackageItemFragment : Fragment() {
         }
 
         fun checkSaveButton() {
-
-
             if (
                 isInputValid() &&
                 hasContentChanges()
@@ -278,9 +283,10 @@ class ViewPackageItemFragment : Fragment() {
                                 exerciseViewModel.addPackageItem(packetItem, flashcard)
                             }
                             2 -> {
+                                val accentPos = binding.positionsEditText.text.toString().toIntOrNull() ?: 1
                                 val accent = Accent(
                                     word = binding.contentEditText.text.toString(),
-                                    accentPos = binding.positionsEditText.text.toString().toIntOrNull() ?: 0
+                                    accentPos = accentPos - 1
                                 )
                                 exerciseViewModel.addPackageItem(packetItem, accent)
                             }
@@ -377,7 +383,7 @@ class ViewPackageItemFragment : Fragment() {
                                 .show()
                         }
                         exerciseViewModel.setCurrentPacketItemNull()
-                        findNavController().popBackStack(R.id.viewPackagesFragment, inclusive = false)
+                        findNavController().popBackStack()
                     }
                     .setNegativeButton("Отмена") { dialog, _ ->
                         dialog.dismiss()
@@ -463,7 +469,7 @@ class ViewPackageItemFragment : Fragment() {
                     binding.difficultySpinner.setSelection(element.difficulty)
                     var format: String = "никогда"
                     if (element.lastViewTimestamp != -1L) {
-                        val date = Date(element.lastViewTimestamp * 1000)  //миллисекунды
+                        val date = Date(element.lastViewTimestamp * (60 * 1000))  //минуты
                         format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(date)
                     }
                     binding.lastViewText.text = format

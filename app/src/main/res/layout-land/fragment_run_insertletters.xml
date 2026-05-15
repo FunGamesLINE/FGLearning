@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="/"/>
             <TextView
-                android:id="@+id/countLeftText"
+                android:id="@+id/countTotalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"/>
@@ -43,6 +43,7 @@
             android:layout_weight="1"/>
 
         <LinearLayout
+            android:id="@+id/indicatorsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
@@ -66,21 +67,14 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/LettersContainer"
-            android:layout_width="match_parent"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lettersRecyclerView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:scrollbars="none"
-                android:overScrollMode="never"/>
-
-        </LinearLayout>
+            android:orientation="horizontal"
+            android:scrollbars="none"
+            android:overScrollMode="never"/>
 
         <Space
             android:layout_width="match_parent"

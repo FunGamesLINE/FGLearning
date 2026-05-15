@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="/"/>
             <TextView
-                android:id="@+id/countLeftText"
+                android:id="@+id/countTotalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"/>
@@ -43,6 +43,7 @@
             android:layout_weight="1"/>
 
         <LinearLayout
+            android:id="@+id/indicatorsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
@@ -66,45 +67,88 @@
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lettersRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:scrollbars="none"
+            android:overScrollMode="never"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
         <LinearLayout
-            android:id="@+id/LettersContainer"
+            android:id="@+id/notesLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            android:orientation="vertical"
+            android:gravity="center">
+            <EditText
+                android:id="@+id/notesEditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="3"
+                android:maxLines="3"
+                android:background="#F0F0F0"
+                android:gravity="top"
+                android:maxLength="100"
+                android:inputType="textMultiLine|textCapSentences"
+                android:scrollbars="vertical"
+                android:padding="5dp"
+                android:hint="Введите заметки"/>
+            <LinearLayout
+                android:id="@+id/notesButtonsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:scrollbars="none"
-                android:overScrollMode="never"/>
+                android:gravity="center">
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/green"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="Сохранить"/>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:text="Отменить"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/continueButtonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/continueButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Продолжить"/>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
 
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <EditText
-            android:id="@+id/notesEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minLines="3"
-            android:maxLines="3"
-            android:background="#F0F0F0"
-            android:gravity="top"
-            android:maxLength="100"
-            android:inputType="textMultiLine|textCapSentences"
-            android:scrollbars="vertical"
-            android:padding="5dp"
-            android:hint="Введите заметки"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
 
     </LinearLayout>
 

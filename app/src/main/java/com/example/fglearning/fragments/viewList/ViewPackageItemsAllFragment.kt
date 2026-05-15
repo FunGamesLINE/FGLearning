@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -15,12 +16,15 @@ import com.example.fglearning.adapter.PackageItemAdapter
 import com.example.fglearning.database.entity.PackageItem
 import com.example.fglearning.databinding.FragmentViewPackageItemsAllBinding
 import com.example.fglearning.setExerciseType
+//import com.example.fglearning.setExerciseType
 import com.example.fglearning.viewmodel.ExerciseViewModel
 import com.example.fglearning.viewmodel.PackageItemsViewModel
 import com.example.fglearning.viewmodel.PackagesViewModel
 import com.example.fglearning.viewmodel.SessionViewModel
 import kotlinx.coroutines.launch
 import kotlin.getValue
+
+
 
 class ViewPackageItemsAllFragment : Fragment() {
     lateinit var binding: FragmentViewPackageItemsAllBinding
@@ -71,10 +75,6 @@ class ViewPackageItemsAllFragment : Fragment() {
                 binding.packetNameText.text = currentPacket.name
                 packageItemsViewModel.loadPacketItems(currentPacket.id, currentPacket.exercise)
             }
-        }
-
-        sessionViewModel.exerciseType.observe(viewLifecycleOwner) { exercise ->
-            binding.exerciseTypeName.setExerciseType(exercise)
         }
 
         binding.addMaterialButton.setOnClickListener {

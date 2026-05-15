@@ -1,6 +1,7 @@
 package com.example.fglearning.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,7 +21,9 @@ import com.example.fglearning.repository.InsertLetterRepository
 import com.example.fglearning.repository.PackageItemRepository
 import com.example.fglearning.repository.PackageRepository
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlin.Long
 
 class ExerciseViewModel(
     application: Application
@@ -52,9 +55,13 @@ class ExerciseViewModel(
     private val _insertLetter = MutableLiveData<InsertLetter?>()
     val insertLetter: LiveData<InsertLetter?> = _insertLetter
 
+
     //MutableList of all materials for this exercise
     private val packageItemsWithData = mutableListOf<PackageItemWithData>()
-    private val scores = mutableMapOf<Long, Int>()
+    private var currentIndex = 0
+
+    private val _currentPackageItemWithData = MutableLiveData<PackageItemWithData?>()
+    val currentPackageItemWithData: LiveData<PackageItemWithData?> = _currentPackageItemWithData
 
     //Statistics
     data class OldExerciseResults(
@@ -67,11 +74,11 @@ class ExerciseViewModel(
         val countBad: Int = 0,
         val countVeryHard: Int = 0
     )
-    private val oldExerciseResults: OldExerciseResults? = null
-    private val scoresMap = mutableMapOf<Long, Int>() //id, score
-    private val totalCorrectCount: Int = 0
-    private val totalIncorrectCount: Int = 0
-    private val _doneCount = MutableLiveData<Int>()
+    private var oldExerciseResults: OldExerciseResults? = null
+    private val scores = mutableMapOf<Long, Int>() //id, score
+    private var totalCorrectCount: Int = 0
+    private var totalIncorrectCount: Int = 0
+    private val _doneCount = MutableLiveData<Int>(0)
     val doneCount: LiveData<Int> = _doneCount
 
     /*
@@ -91,17 +98,26 @@ class ExerciseViewModel(
 
 
     - Инициализация упражнения - всё по нулям, все нужные переменные инициализированны, все слова/карточки получены
+        если все флешкарточки были "неплохо" или "легко", но пользователь запустил приложение, значит нужно запустить флешкарты с теми же правилами
+        //если все карточки были "неплохо", но пользователь запустил приложение, значит нужно "неплохо" оставлять и только легко отсеивать
+        //сортировка по последнему просмотру
     - Установка нового материала - рандом из списка (если остался 1 - то тот же, если несколько - обязательно другой)
     - Обновление текущего материала в зависимости от ответа -
         всегда обновлять последнее время просмотра
+        всегда обновлять заметки
         верно (увеличить очки, если очков достаточно исключить из списка и обновить количество выполненных, обновить все переменные статистики (типа общего количества верных)) неверно (уменьшить очки, но не меньше 0, , обновить все переменные статистики (типа общего количества неверных))
         для флешкарт учитывается только изменение сложности - легко, неплохо (исключить из списка) / плохо, сложно, не выбрано, снова (просто оставить в списке)
-            если все карточки были "неплохо" или "легко", но пользователь запустил приложение, значит нужно запустить флешкарты с теми же правилами
-        //если все карточки были "неплохо", но пользователь запустил приложение, значит нужно "неплохо" оставлять и только легко отсеивать
-        //сортировка по последнему просмотру
      */
 
     private var currentJob: Job? = null
+
+    suspend fun countByPacketAndDifficulty(packetId: Long, difficulty: Int): Int {
+        return packageItemsRepository.countByPacketAndDifficulty(packetId, difficulty)
+    }
+
+    fun countLeftItems(): Int {
+        return packageItemsWithData.size
+    }
 
     fun setCurrentPacketItem(packet: Package?, elemId: Long, onComplete: () -> Unit = {}) {
         viewModelScope.launch {
@@ -164,54 +180,158 @@ class ExerciseViewModel(
         }
     }
 
+    private suspend fun loadItemsWithRetry(packetId: Long, exerciseType: Int): List<PackageItemWithData> {
+        //сложности 0,2,3,4 (учитывается только для флешкарточек)
+        var itemsWithData = loadPacketItemsWithData(packetId, exerciseType, listOf(0, 2, 3, 4))
 
-    fun loadPacketItemsWithData(packetId: Long, exerciseType: Int) {
-        currentJob?.cancel()
+        //для флешкарточек, если ничего не нашли - ищем сложности 1,2
+        if (itemsWithData.isEmpty() && exerciseType == 1) {
+            itemsWithData = loadPacketItemsWithData(packetId, exerciseType, listOf(1))
+        }
 
-        currentJob = viewModelScope.launch {
-            packageItemsRepository.getByPacketId(packetId).collect { packageItemsList ->
-                packageItemsWithData.clear()
-                val itemsWithData = packageItemsList.mapNotNull { packageItem ->
-                    val content = when (exerciseType) {
-                        1 -> {
-                            val flashcard = flashcardRepository.getById(packageItem.id)
-                            flashcard?.let {
-                                ExerciseData.Flashcard(
-                                    frontText = it.frontText,
-                                    backText = it.backText
-                                )
-                            }
-                        }
-                        2 -> {
-                            val accent = accentRepository.getById(packageItem.id)
-                            accent?.let {
-                                ExerciseData.Accent(
-                                    word = it.word,
-                                    accentPos = it.accentPos
-                                )
-                            }
-                        }
-                        3 -> {
-                            val insertLetter = insertLetterRepository.getById(packageItem.id)
-                            insertLetter?.let {
-                                ExerciseData.InsertLetter(
-                                    word = it.word,
-                                    gaps = it.gaps
-                                )
-                            }
-                        }
-                        else -> null
-                    }
+        return itemsWithData
+    }
 
-                    content?.let {
-                        PackageItemWithData(
-                            packageItem = packageItem,
-                            content = it
+    private suspend fun loadPacketItemsWithData(packetId: Long, exerciseType: Int, difficulties: List<Int>): List<PackageItemWithData> {
+        val packageItemsList = packageItemsRepository.getByPacketId(packetId).first()
+
+        return packageItemsList.mapNotNull { packageItem ->
+            val content = when (exerciseType) {
+                1 -> {
+                    val flashcard = flashcardRepository.getByIdAndDifficulty(packageItem.id, difficulties)
+                    flashcard?.let {
+                        ExerciseData.Flashcard(
+                            frontText = it.frontText,
+                            backText = it.backText
                         )
                     }
                 }
-                packageItemsWithData.addAll(itemsWithData)
+                2 -> {
+                    val accent = accentRepository.getById(packageItem.id)
+                    accent?.let {
+                        ExerciseData.Accent(
+                            word = it.word,
+                            accentPos = it.accentPos
+                        )
+                    }
+                }
+                3 -> {
+                    val insertLetter = insertLetterRepository.getById(packageItem.id)
+                    insertLetter?.let {
+                        ExerciseData.InsertLetter(
+                            word = it.word,
+                            gaps = it.gaps
+                        )
+                    }
+                }
+                else -> null
+            }
+
+            content?.let {
+                PackageItemWithData(
+                    packageItem = packageItem,
+                    content = it
+                )
             }
         }
+    }
+
+    fun startExercise(packetId: Long, exerciseType: Int, oldResults: OldExerciseResults, onResult: (Boolean) -> Unit) {
+        _doneCount.value = 0
+        totalCorrectCount = 0
+        totalIncorrectCount = 0
+        scores.clear()
+        oldExerciseResults = oldResults
+
+        viewModelScope.launch {
+            val items = loadItemsWithRetry(packetId, exerciseType)
+            if (items.isNotEmpty()) {
+                packageItemsWithData.clear()
+                packageItemsWithData.addAll(items)
+
+                val itemIds = packageItemsWithData.map { it.packageItem.id }
+                scores.putAll(itemIds.associateWith { 0 })
+                packageItemsRepository.resetLastCounts(itemIds)
+                //packageItemsWithData.shuffle()
+                //currentIndex = 0
+                onResult(true)
+            } else {
+                onResult(false)
+            }
+        }
+    }
+
+    fun setRandomPacketItem(): Boolean {
+        if (packageItemsWithData.isEmpty()) {
+            _currentPackageItemWithData.value = null
+            Log.d("SetRandom", false.toString())
+            return false
+        }
+
+        //random index, but set next index if random index == current index
+        val randomIndex = (0 until packageItemsWithData.size).random()
+        currentIndex = if (randomIndex == currentIndex && packageItemsWithData.size > 1) {
+            (randomIndex + 1) % packageItemsWithData.size  // % гарантирует, что не выйдет за границы
+            } else {
+                randomIndex
+            }
+
+        _currentPackageItemWithData.value = packageItemsWithData[currentIndex]
+        return true
+    }
+
+    suspend fun updateCurrentPackageItem(updatedPacketItem: PackageItem, exerciseType: Int, isCorrect: Boolean? = null) {
+        _currentPackageItemWithData.value?.let { currentPackageItemWithData ->
+            val packetItem = PackageItem(
+                id = currentPackageItemWithData.packageItem.id,
+                packetId = currentPackageItemWithData.packageItem.packetId,
+                difficulty = updatedPacketItem.difficulty,
+                marked = updatedPacketItem.marked,
+                notes = updatedPacketItem.notes,
+                lastViewTimestamp = System.currentTimeMillis() / (1000 * 60)
+            )
+            packageItemsRepository.insert(packetItem)
+            val updatedItemWithData =
+                currentPackageItemWithData.copy(packageItem = packetItem)
+            packageItemsWithData[currentIndex] = updatedItemWithData
+
+            val itemId = currentPackageItemWithData.packageItem.id
+            when (exerciseType) {
+                1 -> {
+                    if (packageItemsWithData[currentIndex].packageItem.difficulty in listOf(1, 2)) {
+                        packageItemsWithData.removeAll { it.packageItem.id == itemId }
+                        scores.remove(itemId)
+                    }
+                }
+
+                2, 3 -> {
+                    if (isCorrect == true) {
+                        scores[itemId] = (scores[itemId] ?: 0) + 1
+                        scores[itemId]?.let { currentScore ->
+                            if (currentScore >= 3) {
+                                packageItemsWithData.removeAll { it.packageItem.id == itemId }
+                                scores.remove(itemId)
+                                _doneCount.value = (_doneCount.value ?: 0) + 1
+                            }
+                        }
+
+                        packageItemsRepository.recordCorrectAnswer(itemId)
+                    }
+                    else {
+                        scores[itemId]?.let {
+                            if (it > 0) scores[itemId] = (scores[itemId] ?: 0) - 1
+                            else scores[itemId] = 0
+                        }
+
+                        packageItemsRepository.recordIncorrectAnswer(itemId)
+                    }
+                }
+            }
+        }
+        Log.d("MYscoresMap", scores.toString())
+    }
+
+    fun getCurrentItemScores(): Int? {
+        return scores[_currentPackageItemWithData.value?.packageItem?.id]
     }
 }

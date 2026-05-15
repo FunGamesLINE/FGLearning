@@ -21,6 +21,12 @@ interface PackageItemDao {
     @Query("SELECT * FROM elements WHERE packetId = :packetId")
     fun getByPacketId(packetId: Long): Flow<List<PackageItem>>
 
+    @Query("SELECT COUNT(*) FROM elements WHERE packetId = :packetId AND difficulty = :difficulty")
+    suspend fun countByPacketAndDifficulty(packetId: Long, difficulty: Int): Int
+
+    //@Query("SELECT COUNT(*) FROM elements WHERE packetId = :packetId")
+    //suspend fun countByPacket(packetId: Long, difficulty: Int): Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIgnore(packageItem: PackageItem): Long
 
@@ -38,6 +44,28 @@ interface PackageItemDao {
 
     @Upsert()
     suspend fun update(packageItems: List<PackageItem>)
+
+    @Query("UPDATE elements SET lastCountCorrect = 0, lastCountIncorrect = 0 WHERE id = :id")
+    suspend fun resetLastCounts(id: Long)
+
+    @Query("UPDATE elements SET lastCountCorrect = 0, lastCountIncorrect = 0 WHERE id IN (:ids)")
+    suspend fun resetLastCounts(ids: List<Long>)
+
+    @Query("""
+        UPDATE elements 
+        SET lastCountCorrect = lastCountCorrect + 1,
+            totalCountCorrect = totalCountCorrect + 1 
+        WHERE id = :id
+    """)
+    suspend fun recordCorrectAnswer(id: Long)
+
+    @Query("""
+        UPDATE elements 
+        SET lastCountIncorrect = lastCountIncorrect + 1,
+            totalCountIncorrect = totalCountIncorrect + 1 
+        WHERE id = :id
+    """)
+    suspend fun recordIncorrectAnswer(id: Long)
 
     @Delete()
     suspend fun delete(packageItem: PackageItem)

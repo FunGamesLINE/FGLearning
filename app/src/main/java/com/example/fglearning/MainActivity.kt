@@ -91,27 +91,14 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, _, _ ->
             binding.drawerLayout.closeDrawers()
         }
-//        binding.navigationView.setNavigationItemSelectedListener {
-//            when (it.itemId) {
-//                R.id.flashcards -> {
-//                    viewPackages(0)
-//                }
-//                R.id.accents -> {
-//                    viewPackages(1)
-//                }
-//                R.id.insert_letters -> {
-//                    viewPackages(2)
-//                }
-//            }
-//            binding.drawerLayout.closeDrawers()
-//            true
-//        }
+
+        sessionViewModel.exerciseType.observe(this) { exercise ->
+            binding.exerciseTypeName.setExerciseType(exercise)
+        }
 
         //val textView = binding.appName
         //textView?.text = Html.fromHtml("<u>a</u>",Html.FROM_HTML_MODE_COMPACT)
 
-        //val textView = binding.aaa
-        //textView?.movementMethod = ScrollingMovementMethod()
     }
 
 

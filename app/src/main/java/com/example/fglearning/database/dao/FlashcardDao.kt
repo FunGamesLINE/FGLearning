@@ -17,6 +17,13 @@ interface FlashcardDao {
     @Query("SELECT * FROM flashcard WHERE id = :id")
     suspend fun getById(id: Long): Flashcard?
 
+    @Query("""
+        SELECT f.* FROM flashcard f
+        INNER JOIN elements e ON f.id = e.id
+        WHERE f.id = :id AND e.difficulty IN (:difficulties)
+    """)
+    suspend fun getByIdAndDifficulty(id: Long, difficulties: List<Int>): Flashcard?
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIgnore(flashcard: Flashcard): Long
 

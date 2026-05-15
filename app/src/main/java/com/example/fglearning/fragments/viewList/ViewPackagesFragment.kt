@@ -8,12 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fglearning.R
 import com.example.fglearning.adapter.PackageAdapter
 import com.example.fglearning.databinding.FragmentViewPackagesBinding
 import com.example.fglearning.setExerciseType
+import com.example.fglearning.viewmodel.ExerciseViewModel
 import com.example.fglearning.viewmodel.PackagesViewModel
 import com.example.fglearning.viewmodel.SessionViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +27,7 @@ class ViewPackagesFragment : Fragment() {
     lateinit var binding: FragmentViewPackagesBinding
     private val sessionViewModel: SessionViewModel by activityViewModels()
     private val packagesViewModel: PackagesViewModel by activityViewModels()
+    private val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +52,36 @@ class ViewPackagesFragment : Fragment() {
                 }
             },
             onPlayClick = { packet ->
-                when (sessionViewModel.exerciseType.value) {
-                    1 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runFlashcardsFragment)
-                    2 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runAccentFragment)
-                    3 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runInsertlettersFragment)
+                lifecycleScope.launch {
+                    val countNotSelected = exerciseViewModel.countByPacketAndDifficulty(packet.id, 0)
+                    val countEasy = exerciseViewModel.countByPacketAndDifficulty(packet.id, 1)
+                    val countNotBad = exerciseViewModel.countByPacketAndDifficulty(packet.id, 2)
+                    val countBad = exerciseViewModel.countByPacketAndDifficulty(packet.id, 3)
+                    val countHard = exerciseViewModel.countByPacketAndDifficulty(packet.id, 4)
+
+                    val oldExerciseResults = ExerciseViewModel.OldExerciseResults(
+                        totalCorrect = packet.lastCountCorrect,
+                        totalIncorrect = packet.lastCountIncorrect,
+                        recordCorrect = packet.recordCountCorrect,
+                        countNotSelected = countNotSelected,
+                        countEasy = countEasy,
+                        countNotBad = countNotBad,
+                        countBad = countBad,
+                        countVeryHard = countHard
+                    )
+
+                    exerciseViewModel.startExercise(packet.id, packet.exercise, oldExerciseResults) { success ->
+                        if (success) {
+                            exerciseViewModel.setRandomPacketItem()
+                            when (sessionViewModel.exerciseType.value) {
+                                1 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runFlashcardsFragment)
+                                2 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runAccentFragment)
+                                3 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runInsertlettersFragment)
+                            }
+                        } else {
+                            Toast.makeText(requireContext(), "Нет материалов для упражнения! Нажмите на пакет, чтобы добавить", Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
             }
         )
@@ -66,10 +95,14 @@ class ViewPackagesFragment : Fragment() {
         }
 
         sessionViewModel.exerciseType.observe(viewLifecycleOwner) { exercise ->
-            binding.exerciseTypeName.setExerciseType(exercise)
             if (exercise != null) {
                 packagesViewModel.loadPackages(exercise)
             }
+        }
+
+        sessionViewModel.shouldShowResults.observe(viewLifecycleOwner) { shouldShowResults ->
+            if (shouldShowResults)
+                findNavController().navigate(R.id.action_viewPackagesFragment_to_resultsFragment)
         }
 
         binding.addPackageButton.setOnClickListener {
