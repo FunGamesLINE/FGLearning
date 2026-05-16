@@ -81,34 +81,6 @@ class ExerciseViewModel(
     private val _doneCount = MutableLiveData<Int>(0)
     val doneCount: LiveData<Int> = _doneCount
 
-    /*
-    TODO
-    - очки за каждый элемент - если ответ верный, к элементу прибавляется очко, если нет, отнимается
-    - общее количество верных и неверных ответов за сессию
-    - множество id-шников элементов которые вышли из участия упражнения в процессе его выполнения
-
-    - старые результаты (количество элементов различных сложностей (5 полей), пр/непр ответов всего из прошлой сессии, рекордное количество в начале упражнения)
-
-
-    Менять (только для тех, кто участвует):
-    - количество правильных и неправильных ответов за эту сессию для каждого элемента
-    - количество пр/непр всего
-    - для пакета количество пр/непр за сессию тоже менять
-    - рекордное количество верных (если реально рекорд)
-
-
-    - Инициализация упражнения - всё по нулям, все нужные переменные инициализированны, все слова/карточки получены
-        если все флешкарточки были "неплохо" или "легко", но пользователь запустил приложение, значит нужно запустить флешкарты с теми же правилами
-        //если все карточки были "неплохо", но пользователь запустил приложение, значит нужно "неплохо" оставлять и только легко отсеивать
-        //сортировка по последнему просмотру
-    - Установка нового материала - рандом из списка (если остался 1 - то тот же, если несколько - обязательно другой)
-    - Обновление текущего материала в зависимости от ответа -
-        всегда обновлять последнее время просмотра
-        всегда обновлять заметки
-        верно (увеличить очки, если очков достаточно исключить из списка и обновить количество выполненных, обновить все переменные статистики (типа общего количества верных)) неверно (уменьшить очки, но не меньше 0, , обновить все переменные статистики (типа общего количества неверных))
-        для флешкарт учитывается только изменение сложности - легко, неплохо (исключить из списка) / плохо, сложно, не выбрано, снова (просто оставить в списке)
-     */
-
     private var currentJob: Job? = null
 
     suspend fun countByPacketAndDifficulty(packetId: Long, difficulty: Int): Int {
@@ -271,7 +243,7 @@ class ExerciseViewModel(
         //random index, but set next index if random index == current index
         val randomIndex = (0 until packageItemsWithData.size).random()
         currentIndex = if (randomIndex == currentIndex && packageItemsWithData.size > 1) {
-            (randomIndex + 1) % packageItemsWithData.size  // % гарантирует, что не выйдет за границы
+            (randomIndex + 1) % packageItemsWithData.size
             } else {
                 randomIndex
             }
@@ -314,6 +286,7 @@ class ExerciseViewModel(
                                 _doneCount.value = (_doneCount.value ?: 0) + 1
                             }
                         }
+                        totalCorrectCount++
 
                         packageItemsRepository.recordCorrectAnswer(itemId)
                     }
@@ -322,6 +295,7 @@ class ExerciseViewModel(
                             if (it > 0) scores[itemId] = (scores[itemId] ?: 0) - 1
                             else scores[itemId] = 0
                         }
+                        totalIncorrectCount++
 
                         packageItemsRepository.recordIncorrectAnswer(itemId)
                     }
@@ -337,5 +311,13 @@ class ExerciseViewModel(
 
     fun getOldExerciseResults(): OldExerciseResults? {
         return oldExerciseResults
+    }
+
+    fun getTotalCorrectCount(): Int {
+        return totalCorrectCount
+    }
+
+    fun getTotalIncorrectCount(): Int {
+        return totalIncorrectCount
     }
 }

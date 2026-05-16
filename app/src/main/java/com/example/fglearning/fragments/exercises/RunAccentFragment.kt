@@ -140,9 +140,8 @@ class RunAccentFragment : Fragment() {
         adapter = AccentAdapter(
             letters = mutableListOf(),
             correctPos = 1,
-            //TODO every click on vowel restart delayAndNextMaterial() - it is bad
             onItemClick = { letter, position ->
-                if (letter in vowels) {
+                if (letter in vowels && !wasTextFocused) {
                     exerciseViewModel.currentPackageItemWithData.value?.let { packageItemWithData ->
                         when (val content = packageItemWithData.content) {
                             is ExerciseData.Accent -> {
@@ -165,8 +164,8 @@ class RunAccentFragment : Fragment() {
             adapter = this@RunAccentFragment.adapter
         }
 
-        sessionViewModel.shouldFinishExercise.observe(viewLifecycleOwner) {
-            findNavController().popBackStack()
+        sessionViewModel.shouldFinishExercise.observe(viewLifecycleOwner) { shouldFinishExercise ->
+            if(shouldFinishExercise) findNavController().popBackStack()
         }
 
         exerciseViewModel.currentPackageItemWithData.observe(viewLifecycleOwner) { packageItemWithData ->

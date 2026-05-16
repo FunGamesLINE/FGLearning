@@ -52,6 +52,7 @@ class SessionViewModel(
 
     fun shownResults() {
         _shouldShowResults.value = false
+        _shouldFinishExercise.value = false
     }
 
     fun startedExercise() {
@@ -76,7 +77,13 @@ class SessionViewModel(
 
     suspend fun resetCurrentPackageRecord() {
         _currentPacket.value?.let { currentPacket ->
-            packageRepository.resetRecord(currentPacket.id)
+            packageRepository.setRecord(currentPacket.id, 0)
+        }
+    }
+
+    suspend fun setCurrentPackageRecord(newRecord: Int) {
+        _currentPacket.value?.let { currentPacket ->
+            packageRepository.setRecord(currentPacket.id, newRecord)
         }
     }
 

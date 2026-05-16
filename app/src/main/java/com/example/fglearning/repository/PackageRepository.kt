@@ -14,7 +14,7 @@ class PackageRepository(private val packageDao: PackageDao) {
 
     suspend fun insert(packet: Package) = packageDao.insert(packet)
 
-    suspend fun resetRecord(id: Long) = packageDao.resetRecord(id)
+    suspend fun setRecord(id: Long, newRecord: Int) = packageDao.setRecord(id, newRecord)
 
     suspend fun resetRecords(ids: List<Long>) = packageDao.resetRecords(ids)
 

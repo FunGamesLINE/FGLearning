@@ -19,7 +19,6 @@
             android:text="@string/attention_rotate_device" />
 
         <ImageView
-            android:id="@+id/imageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@android:drawable/ic_menu_always_landscape_portrait" />

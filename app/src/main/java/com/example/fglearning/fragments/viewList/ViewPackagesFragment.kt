@@ -1,6 +1,7 @@
 package com.example.fglearning.fragments.viewList
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +61,7 @@ class ViewPackagesFragment : Fragment() {
                 )
 
                 exerciseViewModel.startExercise(packet.id, packet.exercise, oldExerciseResults) { success ->
+                    Log.d("MYStartingExercise", success.toString())
                     if (success) {
                         exerciseViewModel.setRandomPacketItem()
                         sessionViewModel.startedExercise()
@@ -69,7 +71,7 @@ class ViewPackagesFragment : Fragment() {
                             3 -> findNavController().navigate(R.id.action_viewPackagesFragment_to_runInsertlettersFragment)
                         }
                     } else {
-                        Toast.makeText(requireContext(), "Нет материалов для упражнения! Нажмите на пакет, чтобы добавить", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "Нет материалов для упражнения! Чтобы добавить их, нажмите на пакет", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -88,6 +90,7 @@ class ViewPackagesFragment : Fragment() {
                 }
             },
             onPlayClick = { packet ->
+                sessionViewModel.setCurrentPacket(packet)
                 startExercise(packet)
             }
         )
