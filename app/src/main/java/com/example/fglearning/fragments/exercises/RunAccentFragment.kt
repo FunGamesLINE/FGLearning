@@ -3,6 +3,7 @@ package com.example.fglearning.fragments.exercises
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -83,10 +84,10 @@ class RunAccentFragment : Fragment() {
                         )
                     }
                 }
+                //TODO finish exercise
                 if (!exerciseViewModel.setRandomPacketItem()) {
                     sessionViewModel.finishExercise()
-                    delayJob = null
-                    findNavController().popBackStack()
+                    delayJob?.cancel()
                 }
 
                 needToShowNextMaterial = false
@@ -139,6 +140,7 @@ class RunAccentFragment : Fragment() {
         adapter = AccentAdapter(
             letters = mutableListOf(),
             correctPos = 1,
+            //TODO every click on vowel restart delayAndNextMaterial() - it is bad
             onItemClick = { letter, position ->
                 if (letter in vowels) {
                     exerciseViewModel.currentPackageItemWithData.value?.let { packageItemWithData ->
@@ -154,7 +156,6 @@ class RunAccentFragment : Fragment() {
                 }
             }
         )
-
         binding.lettersRecyclerView?.apply {
             val horizontalLayoutManager = object : LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false) {
                 override fun canScrollHorizontally(): Boolean = false
@@ -164,6 +165,9 @@ class RunAccentFragment : Fragment() {
             adapter = this@RunAccentFragment.adapter
         }
 
+        sessionViewModel.shouldFinishExercise.observe(viewLifecycleOwner) {
+            findNavController().popBackStack()
+        }
 
         exerciseViewModel.currentPackageItemWithData.observe(viewLifecycleOwner) { packageItemWithData ->
             packageItemWithData?.let {
@@ -214,6 +218,10 @@ class RunAccentFragment : Fragment() {
         })
 
         binding.saveButton?.setOnClickListener {
+            delayAndNextMaterial(0)
+        }
+
+        binding.continueButton?.setOnClickListener {
             delayAndNextMaterial(0)
         }
 

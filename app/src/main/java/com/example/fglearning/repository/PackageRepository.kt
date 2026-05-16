@@ -1,5 +1,6 @@
 package com.example.fglearning.repository
 
+import androidx.room.Query
 import com.example.fglearning.database.dao.PackageDao
 import com.example.fglearning.database.entity.Package
 import kotlinx.coroutines.flow.Flow
@@ -12,6 +13,10 @@ class PackageRepository(private val packageDao: PackageDao) {
     suspend fun getById(id: Long): Package? = packageDao.getById(id)
 
     suspend fun insert(packet: Package) = packageDao.insert(packet)
+
+    suspend fun resetRecord(id: Long) = packageDao.resetRecord(id)
+
+    suspend fun resetRecords(ids: List<Long>) = packageDao.resetRecords(ids)
 
     suspend fun delete(packet: Package) = packageDao.delete(packet)
 }

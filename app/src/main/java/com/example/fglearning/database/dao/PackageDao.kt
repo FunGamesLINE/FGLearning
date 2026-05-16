@@ -21,6 +21,12 @@ interface PackageDao {
     @Upsert()
     suspend fun insert(packet: Package)
 
+    @Query("UPDATE packets SET recordCountCorrect = 0 WHERE id = :id")
+    suspend fun resetRecord(id: Long)
+
+    @Query("UPDATE packets SET recordCountCorrect = 0 WHERE id IN (:ids)")
+    suspend fun resetRecords(ids: List<Long>)
+
     @Delete()
     suspend fun delete(packet: Package)
 }

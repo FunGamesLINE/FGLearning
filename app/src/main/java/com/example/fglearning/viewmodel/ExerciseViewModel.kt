@@ -72,7 +72,7 @@ class ExerciseViewModel(
         val countEasy: Int = 0,
         val countNotBad: Int = 0,
         val countBad: Int = 0,
-        val countVeryHard: Int = 0
+        val countHard: Int = 0
     )
     private var oldExerciseResults: OldExerciseResults? = null
     private val scores = mutableMapOf<Long, Int>() //id, score
@@ -264,7 +264,7 @@ class ExerciseViewModel(
     fun setRandomPacketItem(): Boolean {
         if (packageItemsWithData.isEmpty()) {
             _currentPackageItemWithData.value = null
-            Log.d("SetRandom", false.toString())
+            Log.d("MYSetRandom", false.toString())
             return false
         }
 
@@ -333,5 +333,9 @@ class ExerciseViewModel(
 
     fun getCurrentItemScores(): Int? {
         return scores[_currentPackageItemWithData.value?.packageItem?.id]
+    }
+
+    fun getOldExerciseResults(): OldExerciseResults? {
+        return oldExerciseResults
     }
 }
