@@ -2,9 +2,8 @@ package com.example.fglearning.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.ui.text.toUpperCase
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fglearning.PackageItemWithData
 import com.example.fglearning.R
 import com.example.fglearning.databinding.ItemLetterBinding
 
@@ -44,37 +43,47 @@ class AccentAdapter(
         fun bind(letter: Char, position: Int) {
             binding.letter = letter
             binding.letterText.text = letter.toString().uppercase()
+            binding.letterLayout.setBackgroundResource(R.drawable.shape_rounded)
 
-            if (needToShowAnswer) {
-                if (selectedPosition == position) {
-                    if (correctPos == position) {
-                        if (letter in vowels) binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_right)
-                        else binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_right)
-                    }
-                    else {
-                        if (letter in vowels) binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_wrong)
-                        else binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_wrong)
-                    }
-                }
-                else {
-                    if (correctPos == position) {
-                        if (letter in vowels) binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_right)
-                        else binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_right)
-                    }
-                    else {
-                        if (letter in vowels) binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_active)
-                        else binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_inactive)
-                    }
-                }
-            }
-            else {
-                if (letter in vowels) binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_active)
-                else binding.letterLayout.setBackgroundResource(R.drawable.shape_item_letter_inactive)
-            }
+            updateBackground(position, letter)
 
             binding.root.setOnClickListener {
                 selectedPosition = position
                 onItemClick?.invoke(letter, position)
+            }
+        }
+
+        private fun updateBackground(position: Int, letter: Char) {
+            val drawable = binding.letterLayout.background
+            val context = binding.root.context
+
+            if (needToShowAnswer) {
+                if (selectedPosition == position) {
+                    if (correctPos == position) {
+                        if (letter in vowels) {
+                            drawable.setTint(ContextCompat.getColor(context, R.color.green))
+                        }
+                        else drawable?.setTint(ContextCompat.getColor(context, R.color.green))
+                    }
+                    else {
+                        if (letter in vowels) drawable?.setTint(ContextCompat.getColor(context, R.color.red))
+                        else drawable?.setTint(ContextCompat.getColor(context, R.color.red))
+                    }
+                }
+                else {
+                    if (correctPos == position) {
+                        if (letter in vowels) drawable?.setTint(ContextCompat.getColor(context, R.color.green))
+                        else drawable?.setTint(ContextCompat.getColor(context, R.color.green))
+                    }
+                    else {
+                        if (letter in vowels) drawable?.setTint(ContextCompat.getColor(context, R.color.light_gray))
+                        else drawable?.setTint(ContextCompat.getColor(context, R.color.gray))
+                    }
+                }
+            }
+            else {
+                if (letter in vowels) drawable?.setTint(ContextCompat.getColor(context, R.color.light_gray))
+                else drawable?.setTint(ContextCompat.getColor(context, R.color.gray))
             }
         }
     }
@@ -91,6 +100,8 @@ class AccentAdapter(
         needToShowAnswer = true
         notifyDataSetChanged()
     }
+
+
 //    fun hideAnswer() {
 //        needToShowAnswer = false
 //    }

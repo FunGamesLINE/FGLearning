@@ -24,9 +24,6 @@ interface PackageItemDao {
     @Query("SELECT COUNT(*) FROM elements WHERE packetId = :packetId AND difficulty = :difficulty")
     suspend fun countByPacketAndDifficulty(packetId: Long, difficulty: Int): Int
 
-    //@Query("SELECT COUNT(*) FROM elements WHERE packetId = :packetId")
-    //suspend fun countByPacket(packetId: Long, difficulty: Int): Int
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIgnore(packageItem: PackageItem): Long
 
@@ -73,3 +70,5 @@ interface PackageItemDao {
     @Delete()
     suspend fun delete(packageItems: List<PackageItem>)
 }
+
+

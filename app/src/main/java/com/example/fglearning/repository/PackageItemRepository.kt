@@ -14,7 +14,8 @@ class PackageItemRepository(private val packageItemDao: PackageItemDao) {
 
     fun getByPacketId(packetId: Long): Flow<List<PackageItem>> = packageItemDao.getByPacketId(packetId)
 
-    suspend fun countByPacketAndDifficulty(packetId: Long, difficulty: Int): Int = packageItemDao.countByPacketAndDifficulty(packetId, difficulty)
+    suspend fun countByPacketAndDifficulty(packetId: Long, difficulty: Int): Int =
+        packageItemDao.countByPacketAndDifficulty(packetId, difficulty)
 
     suspend fun resetLastCounts(id: Long) = packageItemDao.resetLastCounts(id)
 

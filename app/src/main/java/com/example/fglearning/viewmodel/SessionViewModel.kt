@@ -81,12 +81,6 @@ class SessionViewModel(
         }
     }
 
-    suspend fun setCurrentPackageRecord(newRecord: Int) {
-        _currentPacket.value?.let { currentPacket ->
-            packageRepository.setRecord(currentPacket.id, newRecord)
-        }
-    }
-
 //    fun setCurrentPacketItem(packetItem: PackageItem) {
 //        _currentPacketItem.value = packetItem
 //    }

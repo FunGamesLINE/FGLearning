@@ -160,15 +160,17 @@ class ResultsFragment : Fragment() {
                     binding.countTotalText.text = countTotal.toString()
 
                     val recordCountCorrect = sessionViewModel.currentPacket.value?.recordCountCorrect
+                    var newRecordCountCorrect = recordCountCorrect
                     recordCountCorrect?.let {
-                        if (recordCountCorrect < exerciseViewModel.getTotalCorrectCount()) {
+                        val totalCorrectCount = exerciseViewModel.getTotalCorrectCount()
+                        if (recordCountCorrect < totalCorrectCount) {
                             binding.recordCountCorrect.text = recordCountCorrect.toString()
                             binding.recordHeader.text = "Старый рекорд: "
                             binding.recordCountCorrect.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
                             binding.recordHeader.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                            sessionViewModel.setCurrentPackageRecord(exerciseViewModel.getTotalCorrectCount())
+                            newRecordCountCorrect = totalCorrectCount
                         }
-                        else if (recordCountCorrect == exerciseViewModel.getTotalCorrectCount()) {
+                        else if (recordCountCorrect == totalCorrectCount) {
                             binding.recordCountCorrect.text = recordCountCorrect.toString()
                             binding.recordHeader.text = "Рекорд: "
                             binding.recordCountCorrect.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
@@ -184,7 +186,8 @@ class ResultsFragment : Fragment() {
 
                     sessionViewModel.currentPacket.value?.let { packet ->
                         lifecycleScope.launch {
-                            val updatedPacket = packet.copy(lastCountCorrect = countCorrect, lastCountIncorrect = countIncorrect)
+                            val updatedPacket = if (newRecordCountCorrect != null) packet.copy(lastCountCorrect = countCorrect, lastCountIncorrect = countIncorrect, recordCountCorrect = newRecordCountCorrect)
+                                else packet.copy(lastCountCorrect = countCorrect, lastCountIncorrect = countIncorrect)
                             packagesViewModel.addPackage(updatedPacket)
                             sessionViewModel.setCurrentPacket(updatedPacket)
                         }

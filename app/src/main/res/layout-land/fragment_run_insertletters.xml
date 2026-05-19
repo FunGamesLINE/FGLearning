@@ -67,7 +67,6 @@
 
         </LinearLayout>
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lettersRecyclerView"
             android:layout_width="wrap_content"
@@ -81,24 +80,75 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <EditText
-            android:id="@+id/notesEditText"
+        <LinearLayout
+            android:id="@+id/notesLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minLines="3"
-            android:maxLines="3"
-            android:background="#F0F0F0"
-            android:gravity="top"
-            android:maxLength="100"
-            android:inputType="textMultiLine|textCapSentences"
-            android:scrollbars="vertical"
-            android:padding="5dp"
-            android:hint="Введите заметки"/>
+            android:orientation="vertical"
+            android:gravity="center">
+            <EditText
+                android:id="@+id/notesEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="3"
+                android:maxLines="3"
+                android:background="#F0F0F0"
+                android:gravity="top"
+                android:maxLength="100"
+                android:inputType="textMultiLine|textCapSentences"
+                android:scrollbars="vertical"
+                android:padding="5dp"
+                android:hint="Введите заметки"/>
+            <LinearLayout
+                android:id="@+id/notesButtonsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/green"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="Сохранить"/>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:text="Отменить"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/continueButtonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/continueButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Продолжить"/>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+        </LinearLayout>
 
     </LinearLayout>
 
