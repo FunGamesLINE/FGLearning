@@ -133,7 +133,7 @@ class ViewPackageItemFragment : Fragment() {
                         val content = binding.contentEditText.text
                         val position = binding.positionsEditText.text.toString().toIntOrNull()
                         val currContent = exerciseViewModel.accent.value?.word
-                        val currPosition = exerciseViewModel.accent.value?.accentPos
+                        val currPosition = exerciseViewModel.accent.value?.accentPos?.let { it + 1 }
 
                         content.toString() != currContent ||
                                 position != currPosition
@@ -319,9 +319,10 @@ class ViewPackageItemFragment : Fragment() {
                                         exerciseViewModel.addPackageItem(updatedElement, updatedflashcard)
                                     }
                                     2 -> {
+                                        val accentPos = binding.positionsEditText.text.toString().toIntOrNull() ?: 1
                                         val updatedaccent = Accent(
                                             word = binding.contentEditText.text.toString(),
-                                            accentPos = binding.positionsEditText.text.toString().toIntOrNull() ?: 0
+                                            accentPos = accentPos - 1
                                         )
                                         exerciseViewModel.addPackageItem(updatedElement, updatedaccent)
                                     }
@@ -422,7 +423,7 @@ class ViewPackageItemFragment : Fragment() {
                         if (binding.contentEditText.text.length > 1) binding.positionsHintText.text = "*Введите позицию ударения от 1 до " + binding.contentEditText.text.length
                         else binding.positionsHintText.text = "*Введите позицию ударения"
                         binding.contentEditText.setText(accent.word)
-                        binding.positionsEditText.setText(accent.accentPos.toString())
+                        binding.positionsEditText.setText((accent.accentPos + 1).toString())
                     }
                 }
                 3 -> {
