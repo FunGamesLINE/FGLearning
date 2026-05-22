@@ -91,7 +91,8 @@ class ViewPackagesFragment : Fragment() {
             },
             onPlayClick = { packet ->
                 sessionViewModel.setCurrentPacket(packet)
-                startExercise(packet)
+                sessionViewModel.startExercise()
+                //startExercise(packet)
             }
         )
         binding.recyclerView.apply {

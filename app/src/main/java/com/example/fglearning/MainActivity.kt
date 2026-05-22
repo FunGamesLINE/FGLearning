@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.text.method.ScrollingMovementMethod
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -39,13 +40,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        if (savedInstanceState == null) {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.frame_content, ViewPackagesFragment())
-//                .commit()
-//        }
-
-
         setSupportActionBar(binding.toolbar)
 
         val toggle = ActionBarDrawerToggle(
@@ -63,6 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.navigationView.setupWithNavController(navController)
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+            binding.finishButton.visibility = View.GONE
             when (menuItem.itemId) {
                 R.id.viewPackagesFragment -> {
                     sessionViewModel.setExerciseType(1)
@@ -99,19 +94,17 @@ class MainActivity : AppCompatActivity() {
         //val textView = binding.appName
         //textView?.text = Html.fromHtml("<u>a</u>",Html.FROM_HTML_MODE_COMPACT)
 
-    }
-
-
-    fun viewPackages(fragment_index: Int) {
-        if (fragment_index <= 2) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_content, ViewPackagesFragment())
-                .commit()
+        binding.finishButton.setOnClickListener {
+            sessionViewModel.finishExercise()
+            binding.finishButton.visibility = View.GONE
+        }
+        sessionViewModel.shouldStartExercise.observe(this) { shouldStartExercise ->
+            if (shouldStartExercise) binding.finishButton.visibility = View.VISIBLE
         }
     }
 
     private fun navigateToPackages() {
-        // очистка всего стека навигации до viewPackagesFragment
+        //очистка всего стека навигации до viewPackagesFragment
         navController.popBackStack(R.id.viewPackagesFragment, inclusive = false)
     }
 }

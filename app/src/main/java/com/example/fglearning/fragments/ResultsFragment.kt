@@ -102,33 +102,52 @@ class ResultsFragment : Fragment() {
                             if (oldExerciseResults.countHard < countHardDifficulty) binding.arrowHardDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                             else binding.arrowHardDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
                         }
-                        else binding.progressHardDifficultyLayout.visibility = View.GONE
+                        else {
+                            binding.progressHardDifficultyLayout.visibility = View.GONE
+                        }
 
                         if (oldExerciseResults.countBad != countBadDifficulty) {
                             binding.progressBadDifficultyLayout.visibility = View.VISIBLE
                             binding.arrowBadDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                         }
-                        else binding.progressBadDifficultyLayout.visibility = View.GONE
+                        else {
+                            binding.progressBadDifficultyLayout.visibility = View.GONE
+                        }
 
                         if (oldExerciseResults.countNotBad != countNotBadDifficulty) {
                             binding.progressNotBadDifficultyLayout.visibility = View.VISIBLE
                             binding.arrowNotBadDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                         }
-                        else binding.progressNotBadDifficultyLayout.visibility = View.GONE
+                        else {
+                            binding.progressNotBadDifficultyLayout.visibility = View.GONE
+                        }
 
                         if (oldExerciseResults.countEasy != countEasyDifficulty) {
                             binding.progressEasyDifficultyLayout.visibility = View.VISIBLE
                             if (oldExerciseResults.countEasy > countEasyDifficulty) binding.arrowEasyDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                             else binding.arrowEasyDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
                         }
-                        else binding.progressEasyDifficultyLayout.visibility = View.GONE
+                        else {
+                            binding.progressEasyDifficultyLayout.visibility = View.GONE
+                        }
+
+                        if (oldExerciseResults.countNotSelected != countNotSelectedDifficulty) {
+                            binding.progressNotSelectedDifficultyLayout.visibility = View.VISIBLE
+                            if (oldExerciseResults.countNotSelected < countNotSelectedDifficulty) binding.arrowNotSelectedDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                            else binding.arrowNotSelectedDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+                        }
+                        else {
+                            binding.progressNotSelectedDifficultyLayout.visibility = View.GONE
+                        }
 
                         if (oldExerciseResults.totalCorrect != countCorrect) {
                             binding.progressCorrectLayout.visibility = View.VISIBLE
                             if (oldExerciseResults.totalCorrect > countCorrect) binding.arrowCorrect.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                             else binding.arrowCorrect.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
                         }
-                        else binding.progressCorrectLayout.visibility = View.GONE
+                        else {
+                            binding.progressCorrectLayout.visibility = View.GONE
+                        }
 
                         if (oldExerciseResults.totalIncorrect != countIncorrect) {
                             binding.progressIncorrectLayout.visibility = View.VISIBLE
@@ -136,13 +155,6 @@ class ResultsFragment : Fragment() {
                             else binding.arrowIncorrect.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
                         }
                         else binding.progressIncorrectLayout.visibility = View.GONE
-
-                        binding.progressNotBadDifficultyLayout.visibility = View.VISIBLE
-                        binding.progressBadDifficultyLayout.visibility = View.VISIBLE
-                        binding.progressEasyDifficultyLayout.visibility = View.VISIBLE
-                        binding.progressNotSelectedDifficultyLayout.visibility = View.VISIBLE
-                        binding.progressCorrectLayout.visibility = View.VISIBLE
-                        binding.progressIncorrectLayout.visibility = View.VISIBLE
 
                         binding.oldCountHardDifficulty.text = oldExerciseResults.countHard.toString()
                         binding.oldCountBadDifficulty.text = oldExerciseResults.countBad.toString()
