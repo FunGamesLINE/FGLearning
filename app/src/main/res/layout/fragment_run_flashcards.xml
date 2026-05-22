@@ -112,7 +112,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <View
-                android:id="@+id/separator"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:foreground="@color/gray"
@@ -134,6 +133,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"/>
+
+        <TextView
+            android:id="@+id/showAnswerButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.35"
+            android:background="@color/purple"
+            android:text="Показать ответ"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="22sp"/>
 
 <!--        <TextView-->
 <!--            android:id="@+id/showAnswerButton"-->
@@ -166,23 +176,35 @@
                 android:padding="5dp"
                 android:scrollbars="vertical" />
             <LinearLayout
+                android:id="@+id/notesButtonsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <ImageView
+                    android:id="@+id/saveButton"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/undo"
-                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/check"
                     android:background="@drawable/shape_rounded"
-                    android:backgroundTint="@color/light_gray"
+                    android:backgroundTint="@color/green"
                     android:layout_weight="1"/>
-
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"/>
+                <ImageView
+                    android:id="@+id/cancelButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/close"
+                    android:background="@drawable/shape_rounded"
+                    android:backgroundTint="@color/red"
+                    android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/setDifficultyButtons"
+            android:id="@+id/setDifficultyButtonsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
@@ -196,7 +218,7 @@
                 android:text="Сложно"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="22dp"/>
+                android:textSize="22sp"/>
             <TextView
                 android:id="@+id/setDifficultyBadButton"
                 android:layout_width="0dp"
@@ -206,7 +228,7 @@
                 android:text="Плохо"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="22dp"/>
+                android:textSize="22sp"/>
             <TextView
                 android:id="@+id/setDifficultyNotBadButton"
                 android:layout_width="0dp"
@@ -216,7 +238,7 @@
                 android:text="Неплохо"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="22dp"/>
+                android:textSize="22sp"/>
             <TextView
                 android:id="@+id/setDifficultyEasyButton"
                 android:layout_width="0dp"
@@ -226,7 +248,7 @@
                 android:text="Легко"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="22dp"/>
+                android:textSize="22sp"/>
         </LinearLayout>
 
     </LinearLayout>

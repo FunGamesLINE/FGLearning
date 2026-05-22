@@ -141,6 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:backgroundTint="@color/purple"
                     android:text="Продолжить"/>
                 <Space
                     android:layout_width="0dp"

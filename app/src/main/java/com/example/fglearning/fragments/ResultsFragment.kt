@@ -2,6 +2,7 @@ package com.example.fglearning.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,6 +91,12 @@ class ResultsFragment : Fragment() {
                     binding.countIncorrect.text = countIncorrect.toString()
                     val oldExerciseResults = exerciseViewModel.getOldExerciseResults()
                     if (oldExerciseResults != null) {
+                        //TODO results progress fix
+                        Log.d("MyResults", oldExerciseResults.countHard.toString() + " " + countHardDifficulty.toString())
+                        Log.d("MyResults", oldExerciseResults.countBad.toString() + " " + countBadDifficulty.toString())
+                        Log.d("MyResults", oldExerciseResults.countNotBad.toString() + " " + countNotBadDifficulty.toString())
+                        Log.d("MyResults", oldExerciseResults.countEasy.toString() + " " + countEasyDifficulty.toString())
+                        Log.d("MyResults", oldExerciseResults.countNotSelected.toString() + " " + countNotSelectedDifficulty.toString())
                         if (oldExerciseResults.countHard != countHardDifficulty) {
                             binding.progressHardDifficultyLayout.visibility = View.VISIBLE
                             if (oldExerciseResults.countHard < countHardDifficulty) binding.arrowHardDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))

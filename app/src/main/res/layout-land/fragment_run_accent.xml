@@ -105,26 +105,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center">
-                <Button
+                <ImageView
                     android:id="@+id/saveButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/check"
+                    android:background="@drawable/shape_rounded"
                     android:backgroundTint="@color/green"
-                    android:textColor="@color/black"
-                    android:layout_weight="1"
-                    android:text="Сохранить"/>
+                    android:layout_weight="1"/>
                 <Space
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-                <Button
+                    android:layout_height="0dp"
+                    android:layout_weight="0.4"/>
+                <ImageView
                     android:id="@+id/cancelButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/close"
+                    android:background="@drawable/shape_rounded"
                     android:backgroundTint="@color/red"
-                    android:textColor="@color/white"
-                    android:layout_weight="1"
-                    android:text="Отменить"/>
+                    android:layout_weight="1"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/continueButtonLayout"
@@ -141,6 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:backgroundTint="@color/purple"
                     android:text="Продолжить"/>
                 <Space
                     android:layout_width="0dp"

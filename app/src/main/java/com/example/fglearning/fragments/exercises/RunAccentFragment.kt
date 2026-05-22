@@ -84,7 +84,6 @@ class RunAccentFragment : Fragment() {
                         )
                     }
                 }
-                //TODO finish exercise
                 if (!exerciseViewModel.setRandomPacketItem()) {
                     sessionViewModel.finishExercise()
                     delayJob?.cancel()

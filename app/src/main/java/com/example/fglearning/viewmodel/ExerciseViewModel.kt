@@ -153,14 +153,22 @@ class ExerciseViewModel(
     }
 
     private suspend fun loadItemsWithRetry(packetId: Long, exerciseType: Int): List<PackageItemWithData> {
-        //сложности 0,2,3,4 (учитывается только для флешкарточек)
-        var itemsWithData = loadPacketItemsWithData(packetId, exerciseType, listOf(0, 2, 3, 4))
-
-        //для флешкарточек, если ничего не нашли - ищем сложности 1,2
-        if (itemsWithData.isEmpty() && exerciseType == 1) {
-            itemsWithData = loadPacketItemsWithData(packetId, exerciseType, listOf(1))
+        var itemsWithData: List<PackageItemWithData> = mutableListOf()
+        when (exerciseType) {
+            1 -> {
+                //сложности 0,2,3,4 (учитывается только для флешкарточек)
+                itemsWithData = loadPacketItemsWithData(packetId, exerciseType, listOf(0, 3, 4))
+                //для флешкарточек, если ничего не нашли - ищем сложности 1,2 ИНАЧЕ добавляем сложность 2, игнорируя сложность 1
+                itemsWithData = if (itemsWithData.isEmpty()) {
+                    loadPacketItemsWithData(packetId, exerciseType, listOf(1, 2))
+                } else {
+                    itemsWithData + loadPacketItemsWithData(packetId, exerciseType, listOf(2))
+                }
+            }
+            2,3 -> {
+                itemsWithData = loadPacketItemsWithData(packetId, exerciseType, listOf(0, 1, 2, 3, 4))
+            }
         }
-
         return itemsWithData
     }
 
@@ -272,6 +280,7 @@ class ExerciseViewModel(
                 1 -> {
                     if (packageItemsWithData[currentIndex].packageItem.difficulty in listOf(1, 2)) {
                         packageItemsWithData.removeAll { it.packageItem.id == itemId }
+                        _doneCount.value = (_doneCount.value ?: 0) + 1
                         scores.remove(itemId)
                     }
                 }

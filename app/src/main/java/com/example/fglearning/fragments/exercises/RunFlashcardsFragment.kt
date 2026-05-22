@@ -28,13 +28,12 @@ class RunFlashcardsFragment : Fragment() {
 
     private val sessionViewModel: SessionViewModel by activityViewModels()
     private val exerciseViewModel: ExerciseViewModel by activityViewModels()
-    private val vowels = setOf('а', 'е', 'ё', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я',
-        'a', 'e', 'i', 'o', 'u', 'y')
 
     private var delayJob: Job? = null
-    private var needToShowNextMaterial: Boolean = false
+
+    //private var needToShowNextMaterial: Boolean = false
     private var isCorrect: Boolean = false
-    private var wasTextFocused = false
+    private var isNotesEditTextChanged = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,91 +45,156 @@ class RunFlashcardsFragment : Fragment() {
     ): View? {
         binding = FragmentRunFlashcardsBinding.inflate(layoutInflater)
 
-        /*
-        fun showAnswer() {
-            binding.continueButtonLayout?.visibility = View.GONE
-            binding.notesButtonsLayout?.visibility = View.GONE
-            binding.notesLayout?.visibility = View.VISIBLE
-            binding.indicatorsLayout?.visibility = View.VISIBLE
+        fun nextMaterial(newCurrentPacketItemDifficulty: Int) {
+            delayJob?.cancel()
 
-            binding.notesEditText?.setText(exerciseViewModel.currentPackageItemWithData.value?.packageItem?.notes)
-            var currentScores = exerciseViewModel.getCurrentItemScores()
-            if (isCorrect) currentScores?.let { currentScores++ }
-            else {
-                currentScores?.let {
-                    if (it > 0) currentScores--
-                    currentScores = 0
-                }
-            }
-            delayAndNextMaterial()
-        }
+            delayJob = lifecycleScope.launch {
+                binding.notesLayout.visibility = View.GONE
+                binding.setDifficultyButtonsLayout.visibility = View.GONE
+                binding.answerAndSeparatorLayout.visibility = View.GONE
+                isNotesEditTextChanged = false
 
-        sessionViewModel.shouldFinishExercise.observe(viewLifecycleOwner) { shouldFinishExercise ->
-            if(shouldFinishExercise) findNavController().popBackStack()
-        }
-
-        exerciseViewModel.currentPackageItemWithData.observe(viewLifecycleOwner) { packageItemWithData ->
-            packageItemWithData?.let {
-                when (val content = packageItemWithData.content) {
-                    is ExerciseData.Accent -> {
-                        adapter.setItems(content.word.toCharArray().toList(), content.accentPos)
-                        binding.notesLayout?.visibility = View.GONE
-                        binding.indicatorsLayout?.visibility = View.GONE
+                exerciseViewModel.currentPackageItemWithData.value?.packageItem?.let { currentPackageItem ->
+                    val packetItem = PackageItem(
+                        //marked = updatedPacketItem.marked,
+                        packetId = currentPackageItem.packetId,
+                        difficulty = newCurrentPacketItemDifficulty,
+                        marked = currentPackageItem.marked,
+                        notes = binding.notesEditText.text.toString()
+                    )
+                    sessionViewModel.exerciseType.value?.let { exerciseType ->
+                        exerciseViewModel.updateCurrentPackageItem(
+                            packetItem,
+                            exerciseType,
+                            isCorrect
+                        )
                     }
+                }
+                if (!exerciseViewModel.setRandomPacketItem()) {
+                    sessionViewModel.finishExercise()
+                    delayJob?.cancel()
+                }
+
+                delayJob = null
+            }
+        }
+
+        fun showAnswer() {
+            binding.showAnswerButton.visibility = View.GONE
+            binding.notesButtonsLayout.visibility = View.GONE
+            binding.notesLayout.visibility = View.VISIBLE
+            binding.answerAndSeparatorLayout.visibility = View.VISIBLE
+            binding.setDifficultyButtonsLayout.visibility = View.VISIBLE
+
+            binding.notesEditText.setText(exerciseViewModel.currentPackageItemWithData.value?.packageItem?.notes)
+
+            exerciseViewModel.currentPackageItemWithData.value?.let { packageItemWithData ->
+                when (val content = packageItemWithData.content) {
+                    is ExerciseData.Flashcard -> {
+                        binding.secondText.text = content.backText
+                    }
+
                     else -> {}
                 }
             }
         }
 
-        val countTotal = (exerciseViewModel.doneCount.value ?: 0) + exerciseViewModel.countLeftItems()
-        binding.countTotalText?.text = countTotal.toString()
-
-        exerciseViewModel.doneCount.observe(viewLifecycleOwner) { countDone ->
-            binding.countDoneText?.text = countDone.toString()
+        sessionViewModel.shouldFinishExercise.observe(viewLifecycleOwner) { shouldFinishExercise ->
+            if (shouldFinishExercise) findNavController().popBackStack()
         }
 
-        binding.notesEditText?.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                if (!needToShowNextMaterial) {
-                    stopNextMaterial()
-                    binding.continueButtonLayout?.visibility = View.VISIBLE
-                    binding.notesButtonsLayout?.visibility = View.GONE
-                    wasTextFocused = true
+        exerciseViewModel.currentPackageItemWithData.observe(viewLifecycleOwner) { packageItemWithData ->
+            packageItemWithData?.let {
+                when (val content = packageItemWithData.content) {
+                    is ExerciseData.Flashcard -> {
+                        binding.notesLayout.visibility = View.GONE
+                        binding.answerAndSeparatorLayout.visibility = View.GONE
+                        binding.setDifficultyButtonsLayout.visibility = View.GONE
+                        binding.showAnswerButton.visibility = View.VISIBLE
+                        binding.firstText.text = content.frontText
+                    }
+
+                    else -> {}
                 }
-            }
-        }
-        binding.notesEditText?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (wasTextFocused) {
-                    if (s.toString() != exerciseViewModel.currentPackageItemWithData.value?.packageItem?.notes) {
-                        binding.continueButtonLayout?.visibility = View.GONE
-                        binding.notesButtonsLayout?.visibility = View.VISIBLE
-                    } else {
-                        binding.continueButtonLayout?.visibility = View.VISIBLE
-                        binding.notesButtonsLayout?.visibility = View.GONE
+                binding.countLeftText.text = exerciseViewModel.countLeftItems().toString()
+                sessionViewModel.currentPacket.value?.let { currentPacket ->
+                    lifecycleScope.launch {
+                        binding.countHardDifficultyText.text =
+                            exerciseViewModel.countByPacketAndDifficulty(currentPacket.id, 4)
+                                .toString()
+                        binding.countBadDifficultyText.text =
+                            exerciseViewModel.countByPacketAndDifficulty(currentPacket.id, 3)
+                                .toString()
+                        binding.countNotBadDifficultyText.text =
+                            exerciseViewModel.countByPacketAndDifficulty(currentPacket.id, 2)
+                                .toString()
+                        binding.countEasyDifficultyText.text =
+                            exerciseViewModel.countByPacketAndDifficulty(currentPacket.id, 1)
+                                .toString()
+                        binding.countNotSelectedDifficultyText.text =
+                            exerciseViewModel.countByPacketAndDifficulty(currentPacket.id, 0)
+                                .toString()
                     }
                 }
             }
+        }
+
+        binding.notesEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus && !isNotesEditTextChanged) {
+                binding.setDifficultyButtonsLayout.visibility = View.VISIBLE
+                binding.notesButtonsLayout.visibility = View.GONE
+                isNotesEditTextChanged = false
+            }
+        }
+        binding.notesEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString() != exerciseViewModel.currentPackageItemWithData.value?.packageItem?.notes) {
+                    binding.setDifficultyButtonsLayout.visibility = View.GONE
+                    binding.notesButtonsLayout.visibility = View.VISIBLE
+                    isNotesEditTextChanged = true
+                } else {
+                    binding.setDifficultyButtonsLayout.visibility = View.VISIBLE
+                    binding.notesButtonsLayout.visibility = View.GONE
+                    isNotesEditTextChanged = false
+                }
+            }
+
             override fun afterTextChanged(s: Editable?) {
             }
         })
 
-        binding.saveButton?.setOnClickListener {
-            delayAndNextMaterial(0)
+        binding.saveButton.setOnClickListener {
+            binding.setDifficultyButtonsLayout.visibility = View.VISIBLE
+            binding.notesButtonsLayout.visibility = View.GONE
+            isNotesEditTextChanged = true
         }
 
-        binding.continueButton?.setOnClickListener {
-            delayAndNextMaterial(0)
+        binding.cancelButton.setOnClickListener {
+            binding.notesEditText.setText(exerciseViewModel.currentPackageItemWithData.value?.packageItem?.notes)
+            binding.setDifficultyButtonsLayout.visibility = View.VISIBLE
+            binding.notesButtonsLayout.visibility = View.GONE
+            isNotesEditTextChanged = false
         }
 
-        binding.cancelButton?.setOnClickListener {
-            binding.notesEditText?.setText(exerciseViewModel.currentPackageItemWithData.value?.packageItem?.notes)
-            delayAndNextMaterial(0)
+        binding.setDifficultyHardButton.setOnClickListener {
+            nextMaterial(4)
+        }
+        binding.setDifficultyBadButton.setOnClickListener {
+            nextMaterial(3)
+        }
+        binding.setDifficultyNotBadButton.setOnClickListener {
+            nextMaterial(2)
+        }
+        binding.setDifficultyEasyButton.setOnClickListener {
+            nextMaterial(1)
         }
 
-         */
+        binding.showAnswerButton.setOnClickListener {
+            showAnswer()
+        }
 
         return binding.root
     }

@@ -10,20 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="32dp"
-            android:text="@string/results" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32dp"
+                android:text="@string/results" />
             <!--
             <TextView
                 android:layout_width="wrap_content"
@@ -84,94 +84,100 @@
                     android:max="100" />
             </FrameLayout>
 
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/correctAndIncorrectLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
             <LinearLayout
-                android:id="@+id/correctAndIncorrectLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Неверных ответов: " />
+                <TextView
+                    android:id="@+id/oldCountIncorrect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/progressIncorrectLayout"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/arrowIncorrect"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Неверных ответов: " />
+                        style="@style/GreenTextStyle"
+                        android:text=" ➜ " />
                     <TextView
-                        android:id="@+id/oldCountIncorrect"
+                        android:id="@+id/countIncorrect"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0" />
-                    <LinearLayout
-                        android:id="@+id/progressIncorrectLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
-                        <TextView
-                            android:id="@+id/arrowIncorrect"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/GreenTextStyle"
-                            android:text=" ➜ " />
-                        <TextView
-                            android:id="@+id/countIncorrect"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0" />
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Верных ответов: " />
-                    <TextView
-                        android:id="@+id/oldCountCorrect"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0" />
-                    <LinearLayout
-                        android:id="@+id/progressCorrectLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
-                        <TextView
-                            android:id="@+id/arrowCorrect"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/GreenTextStyle"
-                            android:text=" ➜ " />
-                        <TextView
-                            android:id="@+id/countCorrect"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0" />
-                        <TextView
-                            android:id="@+id/recordHeader"
-                            android:layout_marginStart="7dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/gray"
-                            android:text="Рекорд: " />
-                        <TextView
-                            android:id="@+id/recordCountCorrect"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/gray"
-                            android:text="0" />
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Верных ответов: " />
+                <TextView
+                    android:id="@+id/oldCountCorrect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+                <LinearLayout
+                    android:id="@+id/progressCorrectLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/arrowCorrect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/GreenTextStyle"
+                        android:text=" ➜ " />
+                    <TextView
+                        android:id="@+id/countCorrect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                    <TextView
+                        android:id="@+id/recordHeader"
+                        android:layout_marginStart="7dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:text="Рекорд: " />
+                    <TextView
+                        android:id="@+id/recordCountCorrect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:text="0" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -387,6 +393,7 @@
                 android:backgroundTint="@color/red"
                 android:text="Сбросить рекорд" />
         </LinearLayout>
+    </LinearLayout>
 
     </LinearLayout>
 
