@@ -148,9 +148,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
             </LinearLayout>
-
         </LinearLayout>
-
+        <TextView
+            android:id="@+id/showAnswerButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/purple"
+            android:text="Показать ответ"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="22sp"/>
     </LinearLayout>
 
 

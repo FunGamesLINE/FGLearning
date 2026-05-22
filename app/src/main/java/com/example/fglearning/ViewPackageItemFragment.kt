@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -291,10 +292,14 @@ class ViewPackageItemFragment : Fragment() {
                                 exerciseViewModel.addPackageItem(packetItem, accent)
                             }
                             3 -> {
+                                val positions = binding.positionsEditText.text.toString().replace(" ", "")
+                                val posSet = positions.split(",").toSet()
+                                val posList = posSet.toList().sorted()
                                 val insertLetter = InsertLetter(
                                     word = binding.contentEditText.text.toString(),
-                                    gaps = binding.positionsEditText.text.toString().replace(" ", "")
+                                    gaps = posList.joinToString(",")
                                 )
+                                //TODO test unique and sorted gaps
                                 exerciseViewModel.addPackageItem(packetItem, insertLetter)
                             }
                         }
@@ -313,22 +318,22 @@ class ViewPackageItemFragment : Fragment() {
                                 when (exercise) {
                                     1 -> {
                                         val updatedflashcard = Flashcard(
-                                            frontText = binding.firstEditText.text.toString(),
-                                            backText = binding.secondEditText.text.toString()
+                                            frontText = binding.firstEditText.text.toString().trim(),
+                                            backText = binding.secondEditText.text.toString().trim()
                                         )
                                         exerciseViewModel.addPackageItem(updatedElement, updatedflashcard)
                                     }
                                     2 -> {
                                         val accentPos = binding.positionsEditText.text.toString().toIntOrNull() ?: 1
                                         val updatedaccent = Accent(
-                                            word = binding.contentEditText.text.toString(),
+                                            word = binding.contentEditText.text.toString().trim(),
                                             accentPos = accentPos - 1
                                         )
                                         exerciseViewModel.addPackageItem(updatedElement, updatedaccent)
                                     }
                                     3 -> {
                                         val updatedinsertLetter = InsertLetter(
-                                            word = binding.contentEditText.text.toString(),
+                                            word = binding.contentEditText.text.toString().trim(),
                                             gaps = binding.positionsEditText.text.toString().replace(" ", "")
                                         )
                                         exerciseViewModel.addPackageItem(updatedElement, updatedinsertLetter)
@@ -342,11 +347,10 @@ class ViewPackageItemFragment : Fragment() {
             }
             findNavController().popBackStack()
         }
-        //TODO saveButton
 
         binding.deleteButton.setOnClickListener {
             exerciseViewModel.element.value?.let { element ->
-                AlertDialog.Builder(requireContext())
+                val builder = AlertDialog.Builder(requireContext())
                     .setTitle("Подтверждение")
                     .setMessage("Вы действительно хотите удалить этот материал?")
                     .setPositiveButton("Да") { dialog, _ ->
@@ -389,7 +393,14 @@ class ViewPackageItemFragment : Fragment() {
                     .setNegativeButton("Отмена") { dialog, _ ->
                         dialog.dismiss()
                     }
-                    .show()
+                val alertDialog = builder.create()
+                alertDialog.setOnShowListener {
+                    val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple))
+                    negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple))
+                }
+                alertDialog.show()
             }
         }
 

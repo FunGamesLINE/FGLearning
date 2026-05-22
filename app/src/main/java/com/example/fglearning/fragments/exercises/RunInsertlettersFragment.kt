@@ -3,6 +3,7 @@ package com.example.fglearning.fragments.exercises
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,27 @@ class RunInsertlettersFragment : Fragment() {
     ): View? {
         binding = FragmentRunInsertlettersBinding.inflate(layoutInflater)
 
-        /*
+        fun isAnswerCorrect(userAnswers: Map<Int, Char>): Boolean {
+            exerciseViewModel.currentPackageItemWithData.value?.let { packageItemWithData ->
+                when (val content = packageItemWithData.content) {
+                    is ExerciseData.InsertLetter -> {
+                        val gapsList = content.gaps.split(",").map { it.toInt() - 1 }
+                        val correctAnswers = content.word.slice(gapsList)
+                        Log.d("MyShowAnswer", userAnswers.values.toString() + " " + correctAnswers.toString())
+                        val isCorrect = gapsList.all { gapIndex ->
+                            val userChar = userAnswers[gapIndex]?.uppercase()
+                            val correctChar = content.word[gapIndex].uppercase()
+                            userChar == correctChar
+                        }
+
+                        return isCorrect
+                    }
+                    else -> {}
+                }
+            }
+            return false
+        }
+
         fun stopNextMaterial() {
             delayJob?.cancel()
             delayJob = null
@@ -88,13 +109,13 @@ class RunInsertlettersFragment : Fragment() {
                     sessionViewModel.finishExercise()
                     delayJob?.cancel()
                 }
-
                 needToShowNextMaterial = false
                 delayJob = null
             }
         }
 
         fun showAnswer() {
+            binding.showAnswerButton?.visibility = View.GONE
             binding.continueButtonLayout?.visibility = View.GONE
             binding.notesButtonsLayout?.visibility = View.GONE
             binding.notesLayout?.visibility = View.VISIBLE
@@ -102,6 +123,9 @@ class RunInsertlettersFragment : Fragment() {
 
             binding.notesEditText?.setText(exerciseViewModel.currentPackageItemWithData.value?.packageItem?.notes)
             var currentScores = exerciseViewModel.getCurrentItemScores()
+            val userAnswers = adapter.showAnswerAndGetUserAnswers()
+            isCorrect = isAnswerCorrect(userAnswers)
+            Log.d("MyShowAnswer", isCorrect.toString())
             if (isCorrect) currentScores?.let { currentScores++ }
             else {
                 currentScores?.let {
@@ -132,27 +156,13 @@ class RunInsertlettersFragment : Fragment() {
                 }
             }
 
-            adapter.showAnswer() //TODO ADAPTER!!!
             delayAndNextMaterial()
         }
 
-        adapter = InsertLettersAdapter( //TODO ADAPTER!!!
+        adapter = InsertLettersAdapter(
+            recyclerView = binding.lettersRecyclerView,
             letters = mutableListOf(),
-            correctPos = 1,
-            onItemClick = { letter, position ->
-                if (letter in vowels && !wasTextFocused) {
-                    exerciseViewModel.currentPackageItemWithData.value?.let { packageItemWithData ->
-                        when (val content = packageItemWithData.content) {
-                            is ExerciseData.Accent -> {
-                                isCorrect = (position == content.accentPos)
-                            }
-
-                            else -> {}
-                        }
-                    }
-                    showAnswer()
-                }
-            }
+            gaps = mutableListOf()
         )
         binding.lettersRecyclerView?.apply {
             val horizontalLayoutManager = object : LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false) {
@@ -160,7 +170,7 @@ class RunInsertlettersFragment : Fragment() {
                 override fun canScrollVertically(): Boolean = false
             }
             layoutManager = horizontalLayoutManager
-            adapter = this@RunInsertlettersFragment.adapter //TODO ADAPTER!!!
+            adapter = this@RunInsertlettersFragment.adapter
         }
 
         sessionViewModel.shouldFinishExercise.observe(viewLifecycleOwner) { shouldFinishExercise ->
@@ -170,14 +180,20 @@ class RunInsertlettersFragment : Fragment() {
         exerciseViewModel.currentPackageItemWithData.observe(viewLifecycleOwner) { packageItemWithData ->
             packageItemWithData?.let {
                 when (val content = packageItemWithData.content) {
-                    is ExerciseData.Accent -> {
-                        adapter.setItems(content.word.toCharArray().toList(), content.accentPos) //TODO ADAPTER!!!
+                    is ExerciseData.InsertLetter -> {
+                        val gapsList = content.gaps.split(",").map { it.toInt() - 1 }
+                        adapter.setItems(content.word.toCharArray().toList(), gapsList)
                         binding.notesLayout?.visibility = View.GONE
                         binding.indicatorsLayout?.visibility = View.GONE
+                        binding.showAnswerButton?.visibility = View.VISIBLE
                     }
                     else -> {}
                 }
             }
+        }
+
+        binding.showAnswerButton?.setOnClickListener {
+            showAnswer()
         }
 
         val countTotal = (exerciseViewModel.doneCount.value ?: 0) + exerciseViewModel.countLeftItems()
@@ -228,7 +244,7 @@ class RunInsertlettersFragment : Fragment() {
             delayAndNextMaterial(0)
         }
 
-         */
+
 
         return binding.root
     }

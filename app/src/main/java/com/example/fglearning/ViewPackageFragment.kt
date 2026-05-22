@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
@@ -109,7 +110,7 @@ class ViewPackageFragment : Fragment() {
 
         binding.deleteButton.setOnClickListener {
             sessionViewModel.currentPacket.value?.let { packet ->
-                AlertDialog.Builder(requireContext())
+                val builder = AlertDialog.Builder(requireContext())
                     .setTitle("Подтверждение")
                     .setMessage("Вы действительно хотите удалить этот пакет?")
                     .setPositiveButton("Да") { dialog, _ ->
@@ -124,10 +125,14 @@ class ViewPackageFragment : Fragment() {
                     .setNegativeButton("Отмена") { dialog, _ ->
                         dialog.dismiss()
                     }
-                    /*.setNeutralButton("Отмена") { dialog, _ ->
-                        dialog.dismiss()
-                    }*/
-                    .show()
+                val alertDialog = builder.create()
+                alertDialog.setOnShowListener {
+                    val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple))
+                    negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple))
+                }
+                alertDialog.show()
             }
         }
 

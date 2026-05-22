@@ -91,12 +91,6 @@ class ResultsFragment : Fragment() {
                     binding.countIncorrect.text = countIncorrect.toString()
                     val oldExerciseResults = exerciseViewModel.getOldExerciseResults()
                     if (oldExerciseResults != null) {
-                        //TODO results progress fix
-                        Log.d("MyResults", oldExerciseResults.countHard.toString() + " " + countHardDifficulty.toString())
-                        Log.d("MyResults", oldExerciseResults.countBad.toString() + " " + countBadDifficulty.toString())
-                        Log.d("MyResults", oldExerciseResults.countNotBad.toString() + " " + countNotBadDifficulty.toString())
-                        Log.d("MyResults", oldExerciseResults.countEasy.toString() + " " + countEasyDifficulty.toString())
-                        Log.d("MyResults", oldExerciseResults.countNotSelected.toString() + " " + countNotSelectedDifficulty.toString())
                         if (oldExerciseResults.countHard != countHardDifficulty) {
                             binding.progressHardDifficultyLayout.visibility = View.VISIBLE
                             if (oldExerciseResults.countHard < countHardDifficulty) binding.arrowHardDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
@@ -227,7 +221,7 @@ class ResultsFragment : Fragment() {
         }
 
         binding.resetRecordButton.setOnClickListener {
-            AlertDialog.Builder(requireContext())
+            val builder = AlertDialog.Builder(requireContext())
                 .setTitle("Подтверждение")
                 .setMessage("Вы действительно хотите cбросить рекорд?")
                 .setPositiveButton("Да") { dialog, _ ->
@@ -245,7 +239,14 @@ class ResultsFragment : Fragment() {
                 .setNegativeButton("Отмена") { dialog, _ ->
                     dialog.dismiss()
                 }
-                .show()
+            val alertDialog = builder.create()
+            alertDialog.setOnShowListener {
+                val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple))
+                negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple))
+            }
+            alertDialog.show()
         }
 
         return binding.root
