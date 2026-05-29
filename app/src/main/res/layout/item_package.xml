@@ -22,6 +22,7 @@
             android:background="@drawable/shape_rounded"
             android:orientation="horizontal"
             android:paddingStart="15dp"
+            android:backgroundTint="@color/white_purple"
             android:paddingEnd="15dp">
 
             <LinearLayout

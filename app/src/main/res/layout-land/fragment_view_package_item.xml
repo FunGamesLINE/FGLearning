@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ViewPackageItemFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:background="@color/purple"-->
+        <!--                    android:textColor="@color/white"-->
+        <!--                    android:text="Материал пакета"-->
+        <!--                    android:gravity="center"-->
+        <!--                    android:textSize="30sp"/>-->
+
+                        <EditText
+                            android:id="@+id/contentEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="25dp"
+                            android:maxLength="15"
+                            android:hint="Заголовок/слово"
+                            android:gravity="center"/>
+                        <EditText
+                            android:id="@+id/firstEditText"
+                            android:padding="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minLines="3"
+                            android:maxLines="3"
+                            android:background="#F0F0F0"
+                            android:gravity="top"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:scrollbars="vertical"
+                            android:maxLength="100"
+                            android:hint="Введите первый текст" />
+                        <EditText
+                            android:id="@+id/secondEditText"
+                            android:layout_marginTop="5dp"
+                            android:padding="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minLines="3"
+                            android:maxLines="3"
+                            android:background="#F0F0F0"
+                            android:gravity="top"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:scrollbars="vertical"
+                            android:maxLength="100"
+                            android:hint="Введите второй текст" />
+
+                        <!-- Gaps in a word / accent position -->
+                        <LinearLayout
+                            android:id="@+id/positions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/positionsHeaderText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Пропуски/позиция"
+                                    android:textSize="18sp"/>
+                                <EditText
+                                    android:id="@+id/positionsEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:digits="0123456789,"
+                                    android:maxLength="100"
+                                    android:hint="1,2,3"
+                                    android:text="" />
+                                <!-- android:inputType="number" -->
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/positionsHintText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/red"
+                                android:gravity="end"
+                                android:text="*Введите пропуски в виде: 1,2,3" />
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp">
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+                        <LinearLayout
+                            android:id="@+id/stats"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18sp"
+                                android:text="Статистика" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Последний просмотр:" />
+                                <TextView
+                                    android:id="@+id/lastViewText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="00.00.0000 00:00" />
+                                <!-- android:inputType="number" -->
+                            </LinearLayout>
+                            <!--                <TextView-->
+                            <!--                    android:layout_width="match_parent"-->
+                            <!--                    android:layout_height="wrap_content"-->
+                            <!--                    android:text="Максимальное количество правильно угаданных пропусков/замен за одну итерацию" />-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Правильных ответов в последний раз:" />
+                                <TextView
+                                    android:id="@+id/lastCorrectAnsCountText"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Неправильных ответов в последний раз:" />
+                                <TextView
+                                    android:id="@+id/lastIncorrectAnsCountText"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0" />
+                                <!-- android:inputType="number" -->
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Правильных ответов всего:" />
+                                <TextView
+                                    android:id="@+id/totalCorrectAnsCountText"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0" />
+                                <!-- android:inputType="number" -->
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Неправильных ответов всего:" />
+                                <TextView
+                                    android:id="@+id/totalIncorrectAnsCountText"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0" />
+                                <!-- android:inputType="number" -->
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+
+                        <!-- Difficulty -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Сложность"
+                                    android:textSize="18sp"/>
+
+                                <Spinner
+                                    android:id="@+id/difficultySpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                                <!--                        <EditText-->
+                                <!--                            android:id="@+id/difficultyEditText"-->
+                                <!--                            android:layout_width="match_parent"-->
+                                <!--                            android:layout_height="wrap_content"-->
+                                <!--                            android:maxLength="1"-->
+                                <!--                            android:digits="1234"-->
+                                <!--                            android:inputType="number"-->
+                                <!--                            android:hint="от 1 до 4"-->
+                                <!--                            android:text="" />-->
+                            </LinearLayout>
+                        </LinearLayout>
+                        <EditText
+                            android:id="@+id/notesEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minLines="4"
+                            android:maxLines="4"
+                            android:background="#F0F0F0"
+                            android:gravity="top"
+                            android:maxLength="100"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:scrollbars="vertical"
+                            android:hint="Введите заметки"/>
+
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/save_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:backgroundTint="#29A220"
+                    android:text="Сохранить" />
+                <!-- Добавить -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/mark_button"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/bookmark" />
+                    <Button
+                        android:id="@+id/back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="@color/purple"
+                        android:text="Отмена" />
+                    <ImageView
+                        android:id="@+id/delete_button"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/delete" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

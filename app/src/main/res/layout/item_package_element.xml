@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="85dp"
             android:background="@drawable/shape_rounded"
+            android:backgroundTint="@color/white_purple"
             android:orientation="horizontal"
             android:paddingStart="15dp"
             android:paddingEnd="15dp">

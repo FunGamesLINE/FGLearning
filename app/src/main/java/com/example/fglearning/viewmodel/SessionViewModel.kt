@@ -26,6 +26,9 @@ class SessionViewModel(
     private val _exerciseType = MutableLiveData(1)
     val exerciseType: LiveData<Int> = _exerciseType
 
+    private val _viewListType = MutableLiveData(1)
+    val viewListType: LiveData<Int> = _viewListType
+
     private val _shouldShowResults = MutableLiveData(false)
     val shouldShowResults: LiveData<Boolean> = _shouldShowResults
 
@@ -70,6 +73,11 @@ class SessionViewModel(
     fun setExerciseType(exercise: Int) {
         _exerciseType.value = exercise
     }
+
+    fun setViewListType(viewList: Int) {
+        _viewListType.value = viewList
+    }
+
 
     fun setCurrentPacket(packet: Package?) {
         _currentPacket.value = packet

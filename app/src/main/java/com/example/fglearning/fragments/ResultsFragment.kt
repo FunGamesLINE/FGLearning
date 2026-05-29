@@ -251,4 +251,9 @@ class ResultsFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onResume() {
+        super.onResume()
+        sessionViewModel.setViewListType(2)
+    }
 }

@@ -87,6 +87,14 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawers()
         }
 
+        sessionViewModel.viewListType.observe(this) { viewListType ->
+            when (viewListType) {
+                0 -> binding.listName.text = "Пакеты"
+                1 -> binding.listName.text = "Материалы"
+                2 -> binding.listName.text = "FGLearning"
+            }
+        }
+
         sessionViewModel.exerciseType.observe(this) { exercise ->
             binding.exerciseTypeName.setExerciseType(exercise)
         }

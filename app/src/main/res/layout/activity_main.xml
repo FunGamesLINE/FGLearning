@@ -19,6 +19,7 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
+                android:background="@color/light_purple"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="FGLearning"
@@ -30,7 +31,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:background="@color/light_gray"
+                    android:background="@color/light_purple"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp">
 
@@ -39,10 +40,10 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
                         <TextView
-                            android:id="@+id/appName"
+                            android:id="@+id/listName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="FGLearning"
+                            android:text="Пакеты"
                             android:textSize="25sp"/>
                         <TextView
                             android:id="@+id/exerciseTypeName"

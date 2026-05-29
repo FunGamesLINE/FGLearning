@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ViewPackageFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp">
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+        <!--                <TextView-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:background="@color/purple"-->
+        <!--                    android:textColor="@color/white"-->
+        <!--                    android:text="Пакет"-->
+        <!--                    android:gravity="center"-->
+        <!--                    android:textSize="30sp"/>-->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/packetName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:maxLength="20"
+                                android:text=""
+                                android:hint="Название пакета"
+                                android:gravity="center"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:text="Упражнение:" />
+                            <TextView
+                                android:id="@+id/exerciseType"
+                                android:layout_marginStart="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:text="ExerciseName" />
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1.5"
+                        android:padding="5dp">
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+                        <LinearLayout
+                            android:id="@+id/stats"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="22sp"
+                                android:text="Статистика" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Количество верных ответов в последний раз:" />
+                                <TextView
+                                    android:id="@+id/correctAnswersLastTime"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="0" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Количество неверных ответов в последний раз:" />
+                                <TextView
+                                    android:id="@+id/incorrectAnswersLastTime"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="0" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Рекордное количество верных ответов:" />
+                                <TextView
+                                    android:id="@+id/correctAnswersRecord"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="0" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/difficultiesCount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Материалы по сложности (от лёгкой к трудной): " />
+                                <!-- TODO + не выбранная сложность серым цветом -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:id="@+id/countEasyDifficulty"
+                                        android:gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/green"
+                                        android:layout_weight="1"
+                                        android:text="0" />
+                                    <TextView
+                                        android:id="@+id/countNotBadDifficulty"
+                                        android:gravity="center"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/yellow"
+                                        android:layout_weight="1"
+                                        android:text="0" />
+                                    <TextView
+                                        android:id="@+id/countBadDifficulty"
+                                        android:gravity="center"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/orange"
+                                        android:textColor="@color/white"
+                                        android:layout_weight="1"
+                                        android:text="0" />
+                                    <TextView
+                                        android:id="@+id/countHardDifficulty"
+                                        android:gravity="center"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/red"
+                                        android:textColor="@color/white"
+                                        android:layout_weight="1"
+                                        android:text="0" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/save_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:backgroundTint="#29A220"
+                    android:text="Сохранить" />
+                <!-- Добавить -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/mark_button"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/bookmark" />
+                    <Button
+                        android:id="@+id/back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="@color/purple"
+                        android:text="Отмена" />
+                    <ImageView
+                        android:id="@+id/delete_button"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/delete" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>
