@@ -83,6 +83,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/rightLinearLayout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical"

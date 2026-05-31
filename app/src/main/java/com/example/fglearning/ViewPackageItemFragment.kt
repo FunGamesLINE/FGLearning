@@ -3,6 +3,7 @@ package com.example.fglearning
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
@@ -404,6 +405,18 @@ class ViewPackageItemFragment : Fragment() {
             }
         }
 
+        binding.contentEditText.inputType = InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE
+        val forbiddenChars = " !@#$%^&*()"
+        val filter = InputFilter { source, start, end, _, _, _ ->
+            for (i in start until end) {
+                if (source[i] in forbiddenChars) {
+                    return@InputFilter ""
+                }
+            }
+            null
+        }
+        binding.contentEditText.filters = arrayOf(filter)
+
         sessionViewModel.exerciseType.observe(viewLifecycleOwner) { exerciseType ->
             when (exerciseType) {
                 1 -> {
@@ -415,6 +428,8 @@ class ViewPackageItemFragment : Fragment() {
                     exerciseViewModel.flashcard.value?.let { flashcard ->
                         binding.firstEditText.setText(flashcard.frontText)
                         binding.secondEditText.setText(flashcard.backText)
+                        binding.firstEditText.hint = "Текст для передней стороны карточки"
+                        binding.secondEditText.hint = "Текст для задней стороны карточки"
                     }
                 }
                 2 -> {
@@ -424,6 +439,7 @@ class ViewPackageItemFragment : Fragment() {
                     binding.firstEditText.visibility = View.GONE
                     binding.secondEditText.visibility = View.GONE
 
+                    binding.contentEditText.hint = "Слово"
                     binding.positionsHeaderText.text = "Позиция:"
                     binding.positionsEditText.hint = "число"
                     binding.positionsEditText.maxEms = 2
@@ -444,6 +460,7 @@ class ViewPackageItemFragment : Fragment() {
                     binding.firstEditText.visibility = View.GONE
                     binding.secondEditText.visibility = View.GONE
 
+                    binding.contentEditText.hint = "Слово"
                     binding.positionsHeaderText.text = "Пропуски:"
                     binding.positionsEditText.hint = "1,2,3"
                     binding.positionsEditText.maxEms = 20

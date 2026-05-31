@@ -252,5 +252,6 @@ class RunInsertlettersFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         sessionViewModel.setViewListType(2)
+        sessionViewModel.setIsExerciseWorking(true)
     }
 }

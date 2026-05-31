@@ -93,5 +93,6 @@ class ViewPackageItemsAllFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         sessionViewModel.setViewListType(1)
+        sessionViewModel.setIsExerciseWorking(false)
     }
 }

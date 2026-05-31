@@ -37,6 +37,8 @@ class RunAccentFragment : Fragment() {
     private var delayJob: Job? = null
     private var needToShowNextMaterial: Boolean = false
     private var isCorrect: Boolean = false
+
+    private var isAnswerShowed: Boolean = false
     private var wasTextFocused = false
 
     lateinit var adapter: AccentAdapter
@@ -90,6 +92,7 @@ class RunAccentFragment : Fragment() {
                 }
 
                 needToShowNextMaterial = false
+                isAnswerShowed = false
                 delayJob = null
             }
         }
@@ -140,7 +143,7 @@ class RunAccentFragment : Fragment() {
             letters = mutableListOf(),
             correctPos = 1,
             onItemClick = { letter, position ->
-                if (letter in vowels && !wasTextFocused) {
+                if (letter in vowels && !wasTextFocused && !isAnswerShowed) {
                     exerciseViewModel.currentPackageItemWithData.value?.let { packageItemWithData ->
                         when (val content = packageItemWithData.content) {
                             is ExerciseData.Accent -> {
@@ -151,6 +154,7 @@ class RunAccentFragment : Fragment() {
                         }
                     }
                     showAnswer()
+                    isAnswerShowed = true
                 }
             }
         )
@@ -234,5 +238,6 @@ class RunAccentFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         sessionViewModel.setViewListType(2)
+        sessionViewModel.setIsExerciseWorking(true)
     }
 }

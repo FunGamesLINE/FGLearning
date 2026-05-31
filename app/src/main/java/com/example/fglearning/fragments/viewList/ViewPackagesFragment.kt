@@ -80,8 +80,10 @@ class ViewPackagesFragment : Fragment() {
         val adapter = PackageAdapter(
             mutableListOf(),
             onItemClick = { packet ->
-                sessionViewModel.setCurrentPacket(packet)
-                findNavController().navigate(R.id.action_viewPackagesFragment_to_viewPackageItemsAllFragment)
+                if (sessionViewModel.shouldShowResults.value != true && sessionViewModel.shouldStartExercise.value != true) {
+                    sessionViewModel.setCurrentPacket(packet)
+                    findNavController().navigate(R.id.action_viewPackagesFragment_to_viewPackageItemsAllFragment)
+                }
             },
             onMarkClick = { packet ->
                 lifecycleScope.launch {
@@ -90,8 +92,10 @@ class ViewPackagesFragment : Fragment() {
                 }
             },
             onPlayClick = { packet ->
-                sessionViewModel.setCurrentPacket(packet)
-                sessionViewModel.startExercise()
+                if (sessionViewModel.shouldShowResults.value != true) {
+                    sessionViewModel.setCurrentPacket(packet)
+                    sessionViewModel.startExercise()
+                }
                 //startExercise(packet)
             }
         )
@@ -134,5 +138,6 @@ class ViewPackagesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         sessionViewModel.setViewListType(0)
+        sessionViewModel.setIsExerciseWorking(false)
     }
 }

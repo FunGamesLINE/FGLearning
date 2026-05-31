@@ -163,20 +163,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0" />
-                    <TextView
-                        android:id="@+id/recordHeader"
-                        android:layout_marginStart="7dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gray"
-                        android:text="Рекорд: " />
-                    <TextView
-                        android:id="@+id/recordCountCorrect"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gray"
-                        android:text="0" />
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/recordHeader"
+                    android:layout_marginStart="7dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:text="Рекорд: " />
+                <TextView
+                    android:id="@+id/recordCountCorrect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:text="0" />
             </LinearLayout>
         </LinearLayout>
 

@@ -68,10 +68,16 @@ class ResultsFragment : Fragment() {
                         1 -> {
                             binding.memorabilityLayout.visibility = View.VISIBLE
                             binding.correctAndIncorrectLayout.visibility = View.GONE
+                            binding.resetRecordButton.visibility = View.GONE
+                            binding.recordHeader.visibility = View.GONE
+                            binding.recordCountCorrect.visibility = View.GONE
                         }
                         2,3 -> {
                             binding.memorabilityLayout.visibility = View.GONE
                             binding.correctAndIncorrectLayout.visibility = View.VISIBLE
+                            binding.resetRecordButton.visibility = View.VISIBLE
+                            binding.recordHeader.visibility = View.VISIBLE
+                            binding.recordCountCorrect.visibility = View.VISIBLE
                         }
                     }
 
@@ -196,6 +202,7 @@ class ResultsFragment : Fragment() {
                             binding.recordHeader.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
                         }
                     }
+                    if (newRecordCountCorrect != null && newRecordCountCorrect != 0) binding.resetRecordButton.visibility = View.VISIBLE
 
                     sessionViewModel.currentPacket.value?.let { packet ->
                         lifecycleScope.launch {
@@ -235,6 +242,9 @@ class ResultsFragment : Fragment() {
                         Toast.LENGTH_SHORT)
                         .show()
                     binding.recordCountCorrect.text = "0"
+                    binding.resetRecordButton.visibility = View.GONE
+                    binding.recordCountCorrect.visibility = View.GONE
+                    binding.recordHeader.visibility = View.GONE
                 }
                 .setNegativeButton("Отмена") { dialog, _ ->
                     dialog.dismiss()
@@ -255,5 +265,6 @@ class ResultsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         sessionViewModel.setViewListType(2)
+        sessionViewModel.setIsExerciseWorking(false)
     }
 }

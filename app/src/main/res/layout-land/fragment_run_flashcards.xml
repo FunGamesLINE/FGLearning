@@ -97,36 +97,43 @@
                 android:layout_weight="1"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/firstText"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:scrollbars="vertical"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="26dp"
-            android:text="Question"/>
-        <LinearLayout
-            android:id="@+id/answerAndSeparatorLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:foreground="@color/gray"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
             <TextView
-                android:id="@+id/secondText"
+                android:id="@+id/firstText"
                 android:gravity="center"
                 android:scrollbars="vertical"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="26dp"
-                android:text="Answer"/>
+                android:maxLines="3"
+                android:text="Question"/>
+            <LinearLayout
+                android:id="@+id/answerAndSeparatorLayout"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:foreground="@color/gray"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"/>
+                <TextView
+                    android:id="@+id/secondText"
+                    android:gravity="center"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="26dp"
+                    android:maxLines="3"
+                    android:text="Answer"/>
+            </LinearLayout>
         </LinearLayout>
 
         <Space
@@ -138,7 +145,7 @@
             android:id="@+id/showAnswerButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             android:background="@color/purple"
             android:text="Показать ответ"
             android:gravity="center"

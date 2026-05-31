@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,8 +38,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, true)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         setSupportActionBar(binding.toolbar)
 
@@ -106,8 +109,9 @@ class MainActivity : AppCompatActivity() {
             sessionViewModel.finishExercise()
             binding.finishButton.visibility = View.GONE
         }
-        sessionViewModel.shouldStartExercise.observe(this) { shouldStartExercise ->
-            if (shouldStartExercise) binding.finishButton.visibility = View.VISIBLE
+        sessionViewModel.isExerciseWorking.observe(this) { isExerciseWorking ->
+            if (isExerciseWorking) binding.finishButton.visibility = View.VISIBLE
+            else binding.finishButton.visibility = View.GONE
         }
     }
 

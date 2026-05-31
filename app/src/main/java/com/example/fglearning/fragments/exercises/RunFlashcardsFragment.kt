@@ -3,6 +3,7 @@ package com.example.fglearning.fragments.exercises
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,9 @@ class RunFlashcardsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRunFlashcardsBinding.inflate(layoutInflater)
+
+        binding.firstText.movementMethod = ScrollingMovementMethod()
+        binding.secondText.movementMethod = ScrollingMovementMethod()
 
         fun nextMaterial(newCurrentPacketItemDifficulty: Int) {
             delayJob?.cancel()
@@ -202,5 +206,6 @@ class RunFlashcardsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         sessionViewModel.setViewListType(2)
+        sessionViewModel.setIsExerciseWorking(true)
     }
 }

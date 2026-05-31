@@ -3,6 +3,7 @@ package com.example.fglearning
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -149,6 +150,7 @@ class ViewPackageFragment : Fragment() {
 
         binding.difficultiesCount.visibility = View.GONE
         //TODO write code for difficultiesCount in ViewPackage fragment
+        binding.packetName.inputType = InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE
 
         sessionViewModel.adding.observe(viewLifecycleOwner) { isAdding ->
             if (isAdding) {
@@ -156,11 +158,13 @@ class ViewPackageFragment : Fragment() {
                 binding.deleteButton.visibility = View.GONE
                 binding.markButton.visibility = View.GONE
                 binding.stats.visibility = View.GONE
+                binding.rightLinearLayout?.visibility = View.GONE
                 binding.packetName.setText("")
             } else {
                 binding.deleteButton.visibility = View.VISIBLE
                 binding.markButton.visibility = View.VISIBLE
                 binding.stats.visibility = View.VISIBLE
+                binding.rightLinearLayout?.visibility = View.VISIBLE
                 sessionViewModel.currentPacket.value?.let { currentPacket ->
                     binding.packetName.setText(currentPacket.name)
                 }
